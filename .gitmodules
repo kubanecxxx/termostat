@@ -4,3 +4,6 @@
 [submodule "framework_cpp"]
 	path = framework_cpp
 	url = /home/kubanec/svn/git_arm_libraries/framework_cpp
+[submodule "delay"]
+	path = delay
+	url = git@github.com:kubanecxxx/delay_class.git
