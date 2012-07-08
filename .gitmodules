@@ -1,0 +1,6 @@
+[submodule "st7735"]
+	path = st7735
+	url = /home/kubanec/svn/git_arm_libraries/st7735
+[submodule "framework_cpp"]
+	path = framework_cpp
+	url = /home/kubanec/svn/git_arm_libraries/framework_cpp
