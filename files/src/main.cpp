@@ -1,6 +1,6 @@
 //#include <__cross_studio_io.h>
 #include <stm32f4xx.h>
-#include "delayclass.h"
+#include "delay/delayclass.h"
 #include "gui/Gui.h"
 
 void blik(void * data);

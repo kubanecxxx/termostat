@@ -9,7 +9,7 @@
 #define GUI_H_
 
 #include "framework_cpp/guiGuiBase.h"
-#include "delayclass.h"
+#include "delay/delayclass.h"
 #include "MainScreenClass.h"
 #include "MenuScreenClass.h"
 #include "TopeniScreenClass.h"
