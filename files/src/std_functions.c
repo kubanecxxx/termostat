@@ -21,6 +21,11 @@
 #undef errno
 extern int errno;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 
 /*
  environ
@@ -270,3 +275,7 @@ int _write(int file, char *ptr, int len) {
     }
     return len;
 }
+
+#ifdef __cplusplus
+}
+#endif

@@ -1,3 +1,5 @@
 Debug
 periph_drivery2
 Release
+ssd1289_lld
+files/port/ssd1289*

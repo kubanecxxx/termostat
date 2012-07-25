@@ -15,18 +15,7 @@ void ReturnMain(void * data);
 
 Gui::Gui()
 {
-	constructor();
-}
-
-Gui::~Gui()
-{
-
-}
-
-void Gui::constructor()
-{
-	gui = (gui_GuiBase*) super_malloc(sizeof(gui_GuiBase));
-	gui->constructor();
+	gui = new gui_GuiBase;
 	MainScreen = gui->MakeScreen();
 	MenuScreen = gui->MakeScreen();
 	VodaScreen = gui->MakeScreen();
@@ -40,7 +29,7 @@ void Gui::constructor()
 	ScreenVoda = &pi;
 
 	gui_FlashWrite flash;
-	flash.Erase(ADDR_FLASH_SECTOR_8, ADDR_FLASH_SECTOR_9);
+	flash.Erase(ADDR_FLASH_SECTOR_8, ADDR_FLASH_SECTOR_9 );
 
 	ScreenTopeni->Init(TopeniScreen, this, false);
 	ScreenMain->Init(MainScreen, this);
@@ -50,17 +39,16 @@ void Gui::constructor()
 
 	gui->print_gui();
 
-	delej = (delay_class *) super_malloc(sizeof(delay_class));
-	del_rtcRefresh = (delay_class *) super_malloc(sizeof(delay_class));
-	del_logicRefresh = (delay_class *) super_malloc(sizeof(delay_class));
-	del_jenom = (delay_class *) super_malloc(sizeof(delay_class));
-	del_returnMain = (delay_class *) super_malloc(sizeof(delay_class));
+	delej = new delay_class(pica, this, 150);
+	del_rtcRefresh = new delay_class(RTC_TimeShow, 0, 20000);
+	del_logicRefresh = new delay_class(logika_refresh, 0, 1000);
+	del_jenom = new delay_class(RTC_TimeShow, 0, 500, true);
+	del_returnMain = new delay_class(ReturnMain, this, 10000);
+}
 
-	del_rtcRefresh->constructor(RTC_TimeShow, 0, 20000);
-	delej->constructor(pica, this, 150);
-	del_logicRefresh->constructor(logika_refresh, 0, 1000);
-	del_jenom->constructor(RTC_TimeShow, 0, 500, true);
-	del_returnMain->constructor(ReturnMain, this, 10000);
+Gui::~Gui()
+{
+
 }
 
 void Gui::SwitchMainScreen(void)

@@ -8,6 +8,11 @@
 
 #include "framework_port.h"
 
+#ifdef TOUCH
+#include "ssd1289_lld/print.h"
+#include "ssd1289_lld/ssd1289_lld.h"
+#endif
+
 void * _sbrk(int incr);
 
 /**
@@ -61,19 +66,29 @@ void low_level_button_init()
 
 void low_level_FillRGB(uint16_t color)
 {
+#ifndef TOUCH
 	lcdFillRGB(color);
+#else
+	tft_ClearScreen(color);
+#endif
 }
 
 void low_level_lcdPutsStringBackground(const char * data, uint16_t x,
 		uint16_t y, uint16_t color, uint16_t background_color, uint8_t size)
 {
+#ifndef TOUCH
 	lcdPutsStringBackground(data, x, y, color, background_color, size);
+#else
+	disp_PutsStringBackground(data,x,y,color,background_color,size);
+#endif
 }
 
-void * super_malloc(uint16_t size)
+inline void * gui_malloc(uint16_t size)
 {
 	return (void *) _sbrk(size);
 }
+
+
 /**
  * @}
  */

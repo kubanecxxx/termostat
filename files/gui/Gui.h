@@ -9,17 +9,16 @@
 #define GUI_H_
 
 #include "framework_cpp/guiGuiBase.h"
-#include "delayclass.h"
+#include "delay/delayclass.h"
 #include "MainScreenClass.h"
 #include "MenuScreenClass.h"
 #include "TopeniScreenClass.h"
 #include "VodaScreenClass.h"
 
-class Gui
+class Gui: public delay_new //because new override
 {
 public:
 	Gui();
-	void constructor();
 	~Gui();
 
 	MainScreenClass * ScreenMain;

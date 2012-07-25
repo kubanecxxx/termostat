@@ -8,7 +8,7 @@
 #ifndef LOGIKA_H_
 #define LOGIKA_H_
 
-#include "framework_port.h"
+#include "port/framework_port.h"
 
 typedef enum
 {
