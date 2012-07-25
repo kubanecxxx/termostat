@@ -2,12 +2,13 @@
 #include <stm32f4xx.h>
 #include "delay/delayclass.h"
 #include "gui/Gui.h"
+#include "port/framework_port.h"
 #ifdef TOUCH
 #include "ssd1289_lld/ssd1289_lld.h"
 #endif
 
 #ifndef TOUCH
-#warning pak si hoď zpátky rychlos na 48
+#warning pak si hoď zpátky rychlost na 48
 #endif
 
 void blik(void * data);
