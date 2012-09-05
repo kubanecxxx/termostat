@@ -5,30 +5,24 @@
  *      Author: kubanec
  */
 
-#include "Gui.h"
-#include "stm32f4xx.h"
+#include "guiInclude.h"
 #include "logika.h"
 
-extern Gui * ui;
+extern GUI::Gui * ui;
 
-logika_ItemsTypedef logika_ItemsReal;
-logika_ItemsTypedef * logika_Items = &logika_ItemsReal;
+Logic::logika_ItemsTypedef Logic::logika_ItemsReal;
+Logic::logika_ItemsTypedef * Logic::logika_Items = &logika_ItemsReal;
 
-logika_KotelStateTypedef logika_GetKotelVodaState(void);
-logika_KotelStateTypedef logika_GetKotelTopeniState(int16_t * teplota);
-logika_KotelStateTypedef logika_GetKotelManualState(void);
-logika_KotelStateTypedef logika_KrucialniPodminka(int16_t Cas, int16_t CasStart,
-		int16_t CasKonec);
-
-void logika_refresh(void * data)
+void Logic::logika_refresh(void * data)
 {
 	(void) data;
 	logika_GetKotelState();
 }
 
-logika_KotelStateTypedef logika_GetKotelState(void)
+Logic::logika_KotelStateTypedef Logic::logika_GetKotelState(void)
 {
-	Gui::Program program = (Gui::Program) ui->ScreenMain->Program->GetValue();
+
+	Program program = (Program) ui->ScreenMain->Program->GetValue();
 	logika_KotelStateTypedef temp;
 	int16_t teplota;
 
@@ -42,18 +36,18 @@ logika_KotelStateTypedef logika_GetKotelState(void)
 	//to bude super obří obludná podmínka s casema a milionem ifů
 	switch (program)
 	{
-	case Gui::PROGRAM_VYPNOUT:
+	case PROGRAM_VYPNOUT:
 		temp = NETOPIT;
 		break;
-	case Gui::PROGRAM_VODA:
+	case PROGRAM_VODA:
 		temp = logika_GetKotelVodaState();
 		break;
-	case Gui::PROGRAM_TOPENI:
+	case PROGRAM_TOPENI:
 		temp = logika_GetKotelTopeniState(&teplota);
 		ui->ScreenMain->TeplotaChtena->SetValue(teplota);
 		ui->ScreenMain->TeplotaChtena->SetShownGlobal(true);
 		break;
-	case Gui::PROGRAM_MANUAL:
+	case PROGRAM_MANUAL:
 		temp = logika_GetKotelManualState();
 		ui->ScreenMain->TeplotaManual->SetShownGlobal(true);
 		break;
@@ -86,17 +80,17 @@ logika_KotelStateTypedef logika_GetKotelState(void)
 	return temp;
 }
 
-logika_KotelStateTypedef logika_GetKotelVodaState(void)
+Logic::logika_KotelStateTypedef Logic::logika_GetKotelVodaState(void)
 {
 	int16_t teplota = ui->ScreenMain->TeplotaDole->GetValue();
 	int16_t Cas = ui->ScreenMain->Hodiny->GetValue() * 60
 			+ ui->ScreenMain->Minuty->GetValue();
-	int16_t teplotaChtena = *(logika_Items->VodaSetting.TeplotaVodyChtena);
-	int16_t HlidatTeplotu = *(logika_Items->VodaSetting.HlidatTeplotu);
-	int16_t casZapnout = (*(logika_Items->VodaSetting.CasH_Start) * 60)
-			+ *(logika_Items->VodaSetting.CasM_Start);
-	int16_t casVypnout = (*(logika_Items->VodaSetting.CasH_Stop) * 60)
-			+ *(logika_Items->VodaSetting.CasM_Stop);
+	int16_t teplotaChtena = ui->ScreenVoda->Teplota->GetValue();
+	int16_t HlidatTeplotu = ui->ScreenVoda->HlidatTeplotu->GetValue();
+	int16_t casZapnout = (ui->ScreenVoda->HodinyZacit->GetValue() * 60)
+			+ ui->ScreenVoda->MinutyZacit->GetValue();
+	int16_t casVypnout = (ui->ScreenVoda->HodinyKonec->GetValue() * 60)
+			+ ui->ScreenVoda->MinutyKonec->GetValue();
 
 	logika_KotelStateTypedef kotel = NETOPIT;
 
@@ -118,7 +112,8 @@ logika_KotelStateTypedef logika_GetKotelVodaState(void)
 	return kotel;
 }
 
-logika_KotelStateTypedef logika_GetKotelTopeniState(int16_t * teplota)
+Logic::logika_KotelStateTypedef Logic::logika_GetKotelTopeniState(
+		int16_t * teplota)
 {
 	int16_t Teplota = ui->ScreenMain->TeplotaDole->GetValue();
 	int16_t Den = ui->ScreenMain->Den->GetValue();
@@ -177,8 +172,8 @@ logika_KotelStateTypedef logika_GetKotelTopeniState(int16_t * teplota)
 	return kotel;
 }
 
-logika_KotelStateTypedef logika_KrucialniPodminka(int16_t Cas, int16_t CasStart,
-		int16_t CasKonec)
+Logic::logika_KotelStateTypedef Logic::logika_KrucialniPodminka(int16_t Cas,
+		int16_t CasStart, int16_t CasKonec)
 {
 	if (CasStart < CasKonec && Cas >= CasStart && Cas < CasKonec)
 		return TOPIT;
@@ -194,7 +189,7 @@ logika_KotelStateTypedef logika_KrucialniPodminka(int16_t Cas, int16_t CasStart,
 	return NETOPIT;
 }
 
-logika_KotelStateTypedef logika_GetKotelManualState(void)
+Logic::logika_KotelStateTypedef Logic::logika_GetKotelManualState(void)
 {
 	int16_t teplota = ui->ScreenMain->TeplotaDoma->GetValue();
 	int16_t teplotaManual = ui->ScreenMain->TeplotaManual->GetValue();

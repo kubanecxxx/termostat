@@ -5,30 +5,18 @@
  *      Author: kubanec
  */
 
-#include "logika.h"
-#include "VodaScreenClass.h"
-#include "Gui.h"
-#include "string.h"
+#include "guiInclude.h"
 
-Gui * chat;
-extern logika_ItemsTypedef * logika_Items;
+namespace GUI
+{
 
-void conv_onoff(char * data, int16_t value);
+using namespace GuiFramework;
+
+gui_Screen * VodaScreenClass::screen;
 
 VodaScreenClass::VodaScreenClass()
 {
-
-}
-
-VodaScreenClass::~VodaScreenClass()
-{
-
-}
-
-void VodaScreenClass::Init(gui_Screen * screen, void * parent)
-{
-	chat = (Gui*) parent;
-
+	screen = new gui_Screen;
 	gui_Item pole[7];
 
 	pole[0].SetText("Hlidat t. ");
@@ -89,21 +77,24 @@ void VodaScreenClass::Init(gui_Screen * screen, void * parent)
 	pole[6].SetPrimaryY(140);
 	pole[6].SetShownValue(false);
 	pole[6].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
-			SwitchToMenu);
+			MenuScreenClass::MakeActiveCB);
 	pole[6].SetConvFunction(conv_dummy);
 
-	screen->AddItems(pole,7);
-
-
-	logika_Items->VodaSetting.CasH_Start = pole[2].GetValueConstPointer();
-	logika_Items->VodaSetting.CasM_Start = pole[3].GetValueConstPointer();
-	logika_Items->VodaSetting.CasH_Stop= pole[4].GetValueConstPointer();
-	logika_Items->VodaSetting.CasM_Stop = pole[5].GetValueConstPointer();
-	logika_Items->VodaSetting.HlidatTeplotu = pole[0].GetValueConstPointer();
-	logika_Items->VodaSetting.TeplotaVodyChtena = pole[1].GetValueConstPointer();
+	Teplota = &pole[1];
+	HlidatTeplotu = &pole[0];
+	HodinyZacit = &pole[2];
+	MinutyZacit = &pole[3];
+	HodinyKonec = &pole[4];
+	MinutyKonec = &pole[5];
 }
 
-void conv_onoff(char * data, int16_t value)
+void VodaScreenClass::MakeActiveCB(void * item)
+{
+	(void) item;
+	screen->printScreen();
+}
+
+void VodaScreenClass::conv_onoff(char * data, int16_t value)
 {
 	const char hoj[2][4] =
 	{
@@ -111,4 +102,5 @@ void conv_onoff(char * data, int16_t value)
 	{ " On" } };
 
 	strcpy(data, hoj[value]);
+}
 }

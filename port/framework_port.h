@@ -8,16 +8,9 @@
 #ifndef GUI_PORT_H_
 #define GUI_PORT_H_
 
-#ifdef __cplusplus
-extern "C"
+#include "inttypes.h"
+namespace GuiFramework
 {
-#endif
-
-#include "stm32f4xx.h"
-#include "st7735/st7735_2.h"
-
-#define TOUCH
-
 /**
  * @defgroup GUI_PORT
  * @{
@@ -41,17 +34,14 @@ void low_level_lcdPutsStringBackground(const char * data, uint16_t x,
 		uint16_t y, uint16_t color, uint16_t background_color, uint8_t size);
 
 void * gui_malloc(uint16_t size);
-
-/**
- * @}
- */
-
-/**
- * @}
- */
-
-#ifdef __cplusplus
+void gui_freeMemory(void * data);
 }
-#endif
+/**
+ * @}
+ */
+
+/**
+ * @}
+ */
 
 #endif /* GUI_PORT_H_ */

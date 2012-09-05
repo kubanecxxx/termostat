@@ -5,47 +5,48 @@
  *      Author: kubanec
  */
 
-#include "stm32f4xx.h"
-#include "rtc.h"
-#include "Gui.h"
+#include "guiInclude.h"
 
 /**
  * @todo teď to utiká o minutu za hodinu, bud zkalibrovat nebo předělat na externi LS šutr
  * @todo dodělat vteřinovej wake-up
  */
 
+namespace GUI
+{
+using namespace GuiFramework;
+
 extern Gui * ui;
 
-void RTC_TimeRegulate(void);
-
-uint8_t rtc_Init(void)
+void rtcClass::Init(void)
 {
-	RTC_TimeRegulate();
-
-	return 0;
+	TimeRegulate();
 }
 
-void RTC_TimeShow(void * data)
+void rtcClass::TimeShow(void * data)
 {
-	RTC_TimeTypeDef RTC_TimeStructure;
-	RTC_DateTypeDef RTC_DateStructure;
+#if 0
+	 RTC_TimeTypeDef RTC_TimeStructure;
+	 RTC_DateTypeDef RTC_DateStructure;
 
-	RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
-	RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
+	 RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
+	 RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
 
-	RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
-	ui->ScreenMain->Hodiny->SetValue(RTC_TimeStructure.RTC_Hours);
-	ui->ScreenMain->Minuty->SetValue(RTC_TimeStructure.RTC_Minutes);
-	ui->ScreenMain->Hodiny->printItem();
-	ui->ScreenMain->Minuty->printItem();
+	 RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
+	 ui->ScreenMain->Hodiny->SetValue(RTC_TimeStructure.RTC_Hours);
+	 ui->ScreenMain->Minuty->SetValue(RTC_TimeStructure.RTC_Minutes);
+	 ui->ScreenMain->Hodiny->printItem();
+	 ui->ScreenMain->Minuty->printItem();
 
-	RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
-	ui->ScreenMain->Den->SetValue(RTC_DateStructure.RTC_WeekDay);
-	ui->ScreenMain->Den->printItem();
+	 RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
+	 ui->ScreenMain->Den->SetValue(RTC_DateStructure.RTC_WeekDay);
+	 ui->ScreenMain->Den->printItem();
+#endif
 }
 
-void RTC_TimeRegulate(void)
+void rtcClass::TimeRegulate(void)
 {
+#if 0
 	uint32_t tmp_hh = 0xFF, tmp_mm = 0xFF, tmp_ss = 0xFF;
 	RTC_InitTypeDef rtc;
 	RTC_TimeTypeDef RTC_TimeStructure;
@@ -89,18 +90,20 @@ void RTC_TimeRegulate(void)
 	if (RTC_SetTime(RTC_Format_BIN, &RTC_TimeStructure) == ERROR)
 	{
 		while (1)
-			;
+		;
 	}
 
 	if (RTC_SetDate(RTC_Format_BIN, &RTC_DateStructure) == ERROR)
 	{
 		while (1)
-			;
+		;
 	}
+#endif
 }
 
-void rtc_zlepsovak(gui_Item * item)
+void rtcClass::zlepsovak(gui_Item * item)
 {
+#if 0
 	int16_t temp = item->GetHighLimit();
 
 	RTC_TimeTypeDef RTC_TimeStructure;
@@ -108,37 +111,38 @@ void rtc_zlepsovak(gui_Item * item)
 
 	switch (temp)
 	{
-	case 7:
+		case 7:
 		RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
 		RTC_DateStructure.RTC_WeekDay = item->GetValue();
 		RTC_SetDate(RTC_Format_BIN, &RTC_DateStructure);
 		break;
-	case 59:
+		case 59:
 		RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
 		RTC_TimeStructure.RTC_Minutes = item->GetValue();
 		RTC_SetTime(RTC_Format_BIN, &RTC_TimeStructure);
 		break;
-	case 23:
+		case 23:
 		RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
 		RTC_TimeStructure.RTC_Hours = item->GetValue();
 		RTC_SetTime(RTC_Format_BIN, &RTC_TimeStructure);
 		break;
 	}
+#endif
 }
 
-void rtc_CallbackUp(void * data)
+void rtcClass::CallbackUp(void * data)
 {
 	gui_Item * item = (gui_Item *) data;
 
 	++(*item);
-	rtc_zlepsovak(item);
+	zlepsovak(item);
 }
 
-void rtc_CallbackDown(void * data)
+void rtcClass::CallbackDown(void * data)
 {
 	gui_Item * item = (gui_Item *) data;
 
 	--(*item);
-	rtc_zlepsovak(item);
+	zlepsovak(item);
 }
-
+}

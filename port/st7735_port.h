@@ -16,7 +16,8 @@
  * @{
  */
 
-#include "stm32f4xx_conf.h"
+#include "ch.h"
+#include "hal.h"
 
 //připadně mrsknout typedef 8, 16 pokud nejsou někde defaultně
 #ifdef ST7735_default_typedefs
@@ -24,19 +25,19 @@
 	typedef unsigned int uint16_t;
 #endif
 
-#define bit_set(x,y) (x->ODR |= y)
-#define bit_clr(x,y) (x->ODR &= ~y)
+#define bit_set(x,y)  (x->ODR |= 1<<y)
+#define bit_clr(x,y)  (x->ODR &= ~ (1<<y))
 
-#define CLR_RS     	bit_clr(GPIOB,GPIO_Pin_1)
-#define SET_RS     	bit_set(GPIOB,GPIO_Pin_1)
-#define CLR_SDA    	bit_clr(GPIOA,GPIO_Pin_7)
-#define SET_SDA    	bit_set(GPIOA,GPIO_Pin_7)
-#define CLR_SCL    	bit_clr(GPIOA,GPIO_Pin_5)
-#define SET_SCL    	bit_set(GPIOA,GPIO_Pin_5)
-#define CLR_CS     	bit_clr(GPIOC,GPIO_Pin_5)
-#define SET_CS     	bit_set(GPIOC,GPIO_Pin_5)
-#define CLR_RES		bit_clr(GPIOB,GPIO_Pin_0)
-#define SET_RES		bit_set(GPIOB,GPIO_Pin_0)
+#define CLR_RS     	bit_clr(GPIOB,1)
+#define SET_RS     	bit_set(GPIOB,1)
+#define CLR_SDA    	bit_clr(GPIOA,7)
+#define SET_SDA    	bit_set(GPIOA,7)
+#define CLR_SCL    	bit_clr(GPIOA,5)
+#define SET_SCL    	bit_set(GPIOA,5)
+#define CLR_CS     	bit_clr(GPIOC,5)
+#define SET_CS     	bit_set(GPIOC,5)
+#define CLR_RES		bit_clr(GPIOB,0)
+#define SET_RES		bit_set(GPIOB,0)
 
 //backlight
 #define CLR_BL

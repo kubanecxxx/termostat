@@ -5,28 +5,22 @@
  *      Author: kubanec
  */
 
-#include "TopeniScreenClass.h"
-#include "Gui.h"
-#include "logika.h"
+#include "guiInclude.h"
 
-extern logika_ItemsTypedef * logika_Items;
+namespace GUI
+{
 
-Gui * tat;
+using namespace GuiFramework;
+//extern logika_ItemsTypedef * logika_Items;
+
 void SwitchToTopeniVikend(void * data);
 
-TopeniScreenClass::TopeniScreenClass()
+gui_Screen * TopeniScreenClass::screenPoPa;
+gui_Screen * TopeniScreenClass::screenSoNe;
+
+TopeniScreenClass::TopeniScreenClass(bool weekend)
 {
-
-}
-
-TopeniScreenClass::~TopeniScreenClass()
-{
-
-}
-
-void TopeniScreenClass::Init(gui_Screen * screen, void * parent, bool weekend)
-{
-	tat = (Gui*) parent;
+	gui_Screen * screen = new gui_Screen;
 	gui_Item items[14];
 
 #define SIZE 8
@@ -60,6 +54,7 @@ void TopeniScreenClass::Init(gui_Screen * screen, void * parent, bool weekend)
 
 		items[3 * i].GetSecondaryCoordinates()->SetX(X3);
 		items[3 * i].GetSecondaryCoordinates()->SetY(Y1 + 2 * (i - 1) * SIZEY);
+		screen->Register(&items[3 * i], true);
 
 		//minuty
 		items[3 * i + 1].SetPrimaryX(X2);
@@ -73,6 +68,7 @@ void TopeniScreenClass::Init(gui_Screen * screen, void * parent, bool weekend)
 		items[3 * i + 1].GetSecondaryCoordinates()->SetX(X4);
 		items[3 * i + 1].GetSecondaryCoordinates()->SetY(
 				Y1 + 2 * (i - 1) * SIZEY);
+		screen->Register(&items[3 * i + 1], true);
 
 		//teploty
 		items[3 * i + 2].SetPrimaryX(XT);
@@ -82,24 +78,31 @@ void TopeniScreenClass::Init(gui_Screen * screen, void * parent, bool weekend)
 		items[3 * i + 2].SetValue(3 * i);
 		items[3 * i + 2].SetConvFunction(conv_hours_minutes);
 		items[3 * i + 2].SetText("T:");
+		screen->Register(&items[3 * i + 2], true);
 
 		if (!weekend)
 		{
-			logika_Items->TopeniSetting.PoPa[i].CasH =
-					items[3 * i].GetValueConstPointer();
-			logika_Items->TopeniSetting.PoPa[i].CasM =
-					items[3 * i + 1].GetValueConstPointer();
-			logika_Items->TopeniSetting.PoPa[i].Teplota =
-					items[3 * i + 2].GetValueConstPointer();
+			/*
+			 logika_Items->TopeniSetting.PoPa[i].CasH =
+			 items[3 * i].GetValueConstPointer();
+			 logika_Items->TopeniSetting.PoPa[i].CasM =
+			 items[3 * i + 1].GetValueConstPointer();
+			 logika_Items->TopeniSetting.PoPa[i].Teplota =
+			 items[3 * i + 2].GetValueConstPointer();
+			 */
+			screenPoPa = screen;
 		}
 		else
 		{
-			logika_Items->TopeniSetting.SoNe[i].CasH =
-					items[3 * i].GetValueConstPointer();
-			logika_Items->TopeniSetting.SoNe[i].CasM =
-					items[3 * i + 1].GetValueConstPointer();
-			logika_Items->TopeniSetting.SoNe[i].Teplota =
-					items[3 * i + 2].GetValueConstPointer();
+			/*
+			 logika_Items->TopeniSetting.SoNe[i].CasH =
+			 items[3 * i].GetValueConstPointer();
+			 logika_Items->TopeniSetting.SoNe[i].CasM =
+			 items[3 * i + 1].GetValueConstPointer();
+			 logika_Items->TopeniSetting.SoNe[i].Teplota =
+			 items[3 * i + 2].GetValueConstPointer();
+			 */
+			screenSoNe = screen;
 		}
 
 		if (weekend && i == 1)
@@ -123,40 +126,42 @@ void TopeniScreenClass::Init(gui_Screen * screen, void * parent, bool weekend)
 	{
 		temp = 7;
 		items[temp].SetText("So-Ne");
-		items[temp].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
-				SwitchToTopeni);
-
+			items[temp].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
+		 MakeActivePoPaCB);
 	}
 	else
 	{
 		temp = 13;
 		items[temp].SetText("Po-Pa");
 		items[temp].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
-				SwitchToTopeniVikend);
+			MakeActiveSoNeCB);
 	}
 	items[temp].SetShownValue(false);
 	items[temp].SetPrimaryX(10);
 	items[temp].SetPrimaryY(10);
 	items[temp].SetConvFunction(conv_dummy);
+	screen->Register(&items[temp], true);
 
-//zpet
+	//zpet
 	items[temp - 1].SetText("Zpet");
 	items[temp - 1].SetShownValue(false);
 	items[temp - 1].SetPrimaryX(50);
 	items[temp - 1].SetPrimaryY(140);
 	items[temp - 1].SetConvFunction(conv_dummy);
 	items[temp - 1].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
-			SwitchToMenu);
-
-	if (weekend)
-		screen->AddItems(items, 8);
-	else
-		screen->AddItems(items, 14);
+			MenuScreenClass::MakeActiveCB);
+	screen->Register(&items[temp - 1], true);
 }
 
-void SwitchToTopeniVikend(void * data)
+void TopeniScreenClass::MakeActivePoPaCB(void * item)
+{
+	(void) item;
+	screenPoPa->printScreen();
+}
+
+void TopeniScreenClass::MakeActiveSoNeCB(void * data)
 {
 	(void) data;
-
-	tat->SwitchTopeniVikendScreen();
+	screenSoNe->printScreen();
+}
 }

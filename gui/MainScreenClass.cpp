@@ -5,29 +5,36 @@
  *      Author: kubanec
  */
 
-#include "Gui.h"
-#include "MainScreenClass.h"
-#include "string.h"
-#include "rtc.h"
+#include "guiInclude.h"
 
-void conv_hours_minutes(char * data, int16_t value);
-void conv_days(char* data, int16_t value);
-void conv_program(char* data, int16_t value);
-void conv_topit(char * data, int16_t value);
-void conv_dummy(char * data, int16_t value);
-
-Gui * fotr;
-
-void MainScreenClass::Init(gui_Screen * screen, void * parent)
+namespace GUI
 {
+
+using namespace GuiFramework;
+
+gui_Screen * MainScreenClass::screen;
+
+bool MainScreenClass::IsActive()
+{
+	return (screen == gui_Screen::GetActiveScreen());
+}
+
+void MainScreenClass::MakeActiveCB(void * item)
+{
+	(void) item;
+	screen->printScreen();
+}
+
+/**
+ * vytvořit screen
+ * najebat do něho všecko
+ *
+ */
+MainScreenClass::MainScreenClass()
+{
+	screen = new gui_Screen;
+
 	gui_Item cha[10];
-	gui_Label be[4];
-
-	gui_Item * chaj;
-	gui_Label * Doma;
-	gui_Label * Dole;
-
-	fotr = (Gui *) parent;
 
 	Hodiny = &cha[0];
 	Minuty = &cha[1];
@@ -41,9 +48,6 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	TeplotaDole = &cha[8];
 	TeplotaDoma = &cha[9];
 
-	Doma = &be[0];
-	Dole = &be[1];
-
 	Hodiny->SetText("");
 	Hodiny->SetHighLimit(23);
 	Hodiny->SetLowLimit(0);
@@ -53,8 +57,9 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	Hodiny->SetPrimaryX(10);
 	Hodiny->SetPrimaryY(10);
 	Hodiny->SetCallback(gui_Item::BUTTON_DOWN, gui_Item::CLICKED,
-			rtc_CallbackDown);
-	Hodiny->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtc_CallbackUp);
+			rtcClass::CallbackDown);
+	Hodiny->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtcClass::CallbackUp);
+	Hodiny = screen->Register(Hodiny, true);
 
 	Minuty->SetText(":");
 	Minuty->SetHighLimit(59);
@@ -65,8 +70,9 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	Minuty->SetPrimaryX(26);
 	Minuty->SetPrimaryY(10);
 	Minuty->SetCallback(gui_Item::BUTTON_DOWN, gui_Item::CLICKED,
-			rtc_CallbackDown);
-	Minuty->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtc_CallbackUp);
+			rtcClass::CallbackDown);
+	Minuty->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtcClass::CallbackUp);
+	Minuty = screen->Register(Minuty, true);
 
 	Den->SetText("");
 	Den->SetPrimaryX(100);
@@ -77,8 +83,9 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	Den->SetValueRounding(true);
 	Den->SetConvFunction(conv_days);
 	Den->SetCallback(gui_Item::BUTTON_DOWN, gui_Item::CLICKED,
-			rtc_CallbackDown);
-	Den->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtc_CallbackUp);
+			rtcClass::CallbackDown);
+	Den->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtcClass::CallbackUp);
+	Den = screen->Register(Den, true);
 
 	Program->SetLowLimit(0);
 	Program->SetHighLimit(3);
@@ -89,6 +96,7 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	Program->SetFontSize(16);
 	Program->SetValueRounding(true);
 	Program->SetText("");
+	Program = screen->Register(Program, true);
 
 	TeplotaManual->SetText("");
 	TeplotaManual->SetPrimaryX(80);
@@ -99,6 +107,7 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	TeplotaManual->SetShownGlobal(false);
 	TeplotaManual->SetValue(25);
 	TeplotaManual->SetConvFunction(conv_hours_minutes);
+	TeplotaManual = screen->Register(TeplotaManual, true);
 
 	TeplotaChtena->SetConvFunction(conv_hours_minutes);
 	TeplotaChtena->SetText("");
@@ -108,14 +117,17 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	TeplotaChtena->SetChoseable(false);
 	TeplotaChtena->SetShownGlobal(false);
 	TeplotaChtena->SetValue(10);
+	TeplotaChtena = screen->Register(TeplotaChtena, true);
 
 	Menu->SetText("MENU");
 	Menu->SetPrimaryX(10);
 	Menu->SetPrimaryY(140);
 	Menu->SetShownValue(false);
+	// enter the menu
 	Menu->SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
-			SwitchToMenu);
+			MenuScreenClass::MakeActiveCB);
 	Menu->SetConvFunction(conv_dummy);
+	Menu = screen->Register(Menu, true);
 
 	Topi->SetPrimaryX(60);
 	Topi->SetPrimaryY(140);
@@ -125,6 +137,7 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	Topi->SetConvFunction(conv_topit);
 	Topi->SetText("");
 	Topi->SetUseDefaultTextColor(false);
+	Topi = screen->Register(Topi, true);
 
 	TeplotaDole->SetPrimaryX(50);
 	TeplotaDole->SetPrimaryY(110);
@@ -133,6 +146,7 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	TeplotaDole->SetChoseable(false);
 	TeplotaDole->SetValue(40);
 	TeplotaDole->SetConvFunction(conv_hours_minutes);
+	TeplotaDole = screen->Register(TeplotaDole, true);
 
 	TeplotaDoma->SetPrimaryX(50);
 	TeplotaDoma->SetPrimaryY(80);
@@ -141,14 +155,25 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	TeplotaDoma->SetText("");
 	TeplotaDoma->SetValue(23);
 	TeplotaDoma->SetConvFunction(conv_hours_minutes);
+	TeplotaDoma = screen->Register(TeplotaDoma);
+
+	gui_Label be[4];
+
+	gui_Label * Doma;
+	gui_Label * Dole;
+
+	Doma = &be[0];
+	Dole = &be[1];
 
 	Doma->SetPrimaryX(10);
 	Doma->SetPrimaryY(84);
 	Doma->SetText("Doma");
+	Doma = screen->Register(Doma, true);
 
 	Dole->SetPrimaryX(10);
 	Dole->SetPrimaryY(114);
 	Dole->SetText("Voda");
+	Dole = screen->Register(Dole, true);
 
 	be[2].SetText("~C");
 	be[2].SetPrimaryX(82);
@@ -156,36 +181,11 @@ void MainScreenClass::Init(gui_Screen * screen, void * parent)
 	be[2].AddSecondaryCoor(82, 110, screen);
 	be[2].SetFontSize(16);
 
-	chaj = screen->AddItems(cha, 10);
-	screen->AddLabels(be, 3);
-
-	Hodiny = &chaj[0];
-	Minuty = &chaj[1];
-	Den = &chaj[2];
-	Program = &chaj[3];
-	TeplotaManual = &chaj[4];
-	TeplotaChtena = &chaj[5];
-	Menu = &chaj[6];
-	Topi = &chaj[7];
-	TeplotaDole = &chaj[8];
-	TeplotaDoma = &chaj[9];
-
-	rtc_Init();
+	screen->Register(&be[0], true);
+	screen->Register(&be[1], true);
 }
 
-void conv_hours_minutes(char * data, int16_t value)
-{
-	data[2] = 0;
-	data[0] = value / 10 + '0';
-	data[1] = value % 10 + '0';
-}
-
-MainScreenClass::MainScreenClass()
-{
-
-}
-
-void conv_days(char* data, int16_t value)
+void MainScreenClass::conv_days(char* data, int16_t value)
 {
 	const char dny[7][3] =
 	{
@@ -200,17 +200,7 @@ void conv_days(char* data, int16_t value)
 	strcpy(data, dny[value - 1]);
 }
 
-MainScreenClass::~MainScreenClass()
-{
-
-}
-
-void conv_dummy(char * data, int16_t value)
-{
-	data[0] = '\0';
-}
-
-void conv_topit(char * data, int16_t value)
+void MainScreenClass::conv_topit(char * data, int16_t value)
 {
 	const char top[2][10] =
 	{
@@ -219,7 +209,7 @@ void conv_topit(char * data, int16_t value)
 	strcpy(data, top[value]);
 }
 
-void conv_program(char* data, int16_t value)
+void MainScreenClass::conv_program(char* data, int16_t value)
 {
 	const char programy[4][8] =
 	{
@@ -231,7 +221,4 @@ void conv_program(char* data, int16_t value)
 	strcpy(data, programy[value]);
 }
 
-void SwitchToMenu(void * data)
-{
-	fotr->SwitchMenuScreen();
 }

@@ -4,3 +4,5 @@ periph_drivery
 Release
 ssd1289_lld
 files/port/ssd1289*
+build
+.dep
