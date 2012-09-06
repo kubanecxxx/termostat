@@ -23,6 +23,7 @@
 void low_level_output(uint8_t data)
 {
 	uint8_t i = 0;
+
 	systickDelay(1);
 	for (i = 0; i < 8; i++)
 	{
@@ -47,11 +48,11 @@ void low_level_output(uint8_t data)
  */
 void low_level_init(void)
 {
-	palSetPadMode(GPIOA,7,PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOB,1,PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOA,5,PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOC,7,PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOB,0,PAL_MODE_OUTPUT_PUSHPULL);
+	palSetPadMode(GPIOA, 7, PAL_MODE_OUTPUT_PUSHPULL);
+	palSetPadMode(GPIOB, 1, PAL_MODE_OUTPUT_PUSHPULL);
+	palSetPadMode(GPIOA, 6, PAL_MODE_OUTPUT_PUSHPULL);
+	palSetPadMode(GPIOC, 5, PAL_MODE_OUTPUT_PUSHPULL);
+	palSetPadMode(GPIOB, 0, PAL_MODE_OUTPUT_PUSHPULL);
 }
 
 /**
@@ -62,7 +63,8 @@ void low_level_init(void)
  */
 void systickDelay(uint16_t ms)
 {
-	chThdSleepMilliseconds(ms);
+	while (ms--)
+		;
 }
 
 /**

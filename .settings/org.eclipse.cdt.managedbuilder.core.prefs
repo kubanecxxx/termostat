@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+environment/buildEnvironmentInclude/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/CPATH/delimiter=\:
+environment/buildEnvironmentInclude/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/CPATH/operation=remove
+environment/buildEnvironmentInclude/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/CPLUS_INCLUDE_PATH/delimiter=\:
+environment/buildEnvironmentInclude/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/CPLUS_INCLUDE_PATH/operation=remove
+environment/buildEnvironmentInclude/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/C_INCLUDE_PATH/delimiter=\:
+environment/buildEnvironmentInclude/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/C_INCLUDE_PATH/operation=remove
+environment/buildEnvironmentInclude/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/append=true
+environment/buildEnvironmentInclude/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/appendContributed=true
+environment/buildEnvironmentLibrary/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/LIBRARY_PATH/delimiter=\:
+environment/buildEnvironmentLibrary/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/LIBRARY_PATH/operation=remove
+environment/buildEnvironmentLibrary/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/append=true
+environment/buildEnvironmentLibrary/org.eclipse.cdt.cross.arm.gnu.sourcery.linux.elf.debug.1228753338/appendContributed=true

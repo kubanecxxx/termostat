@@ -80,10 +80,11 @@ include st7735/st7735.mk
 LDSCRIPT= $(PORTLD)/STM32F407xG.ld
 #LDSCRIPT= $(PORTLD)/STM32F407xG_CCM.ld
 
+# krida setup 
 CPPFILES = $(wildcard port/*.cpp) $(wildcard gui/*.cpp) 
 CPPFILES += special/logika.cpp
 CFILES = $(wildcard port/*.c) $(wildcard gui/*.c)
-INCDIR += port gui special
+INCDIR += gui special port
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -128,7 +129,7 @@ ASMSRC = $(PORTASM)
 INCDIR += $(PORTINC) $(KERNINC) $(TESTINC) \
          $(HALINC) $(PLATFORMINC) $(BOARDINC) \
          $(CHIBIOS)/os/various $(I2C_USER_INC) \
-         $(USB_USER_INC) port .
+         $(USB_USER_INC) 
 
 #
 # Project, sources and paths

@@ -3,14 +3,26 @@
 
 #include "delayclass.h"
 #include "guiInclude.h"
+#include "st7735_2.h"
 
 void blik(void * data);
 GUI::Gui * ui;
+
+void HardFaultVector(void)
+{
+}
 
 int main(void)
 {
 	chSysInit();
 	halInit();
+
+	lcdInit();
+	lcdDrawPixel(10, 10, 0x1111);
+	while (1)
+	{
+		lcdDrawPixel(10, 10, 0x1111);
+	};
 
 	delay_process virtual_timer;
 
