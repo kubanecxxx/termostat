@@ -77,7 +77,7 @@ include st7735/st7735.mk
 #include $(CHIBIOS)/stm32f4_drivers/drivers.mk
 
 # Define linker script file here
-LDSCRIPT= $(PORTLD)/STM32F407xG.ld
+LDSCRIPT= STM32F407xG.ld
 #LDSCRIPT= $(PORTLD)/STM32F407xG_CCM.ld
 
 # krida setup 

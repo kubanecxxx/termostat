@@ -25,12 +25,9 @@ public:
 
 	delay_class * del_returnMain;
 
-
-
 private:
 	delay_class * delej;
 	delay_class * del_rtcRefresh;
-	delay_class * del_logicRefresh;
 	delay_class * del_jenom;
 
 	static void pica(void * data);

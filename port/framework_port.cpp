@@ -46,7 +46,7 @@ uint32_t low_level_input_buttons(void)
 
 void low_level_button_init()
 {
-	//lcdInit();
+	lcdInit();
 	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOC, 14, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOC, 15, PAL_MODE_INPUT_PULLDOWN);

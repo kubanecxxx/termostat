@@ -18,6 +18,7 @@ gui_Screen * MenuScreenClass::screen;
  */
 MenuScreenClass::MenuScreenClass()
 {
+	screen = new gui_Screen;
 	gui_Item pole[3];
 
 	Voda = &pole[0];

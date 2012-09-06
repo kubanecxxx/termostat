@@ -13,6 +13,7 @@ using namespace GuiFramework;
 
 Gui::Gui()
 {
+	low_level_button_init();
 	gui_FlashWrite::Erase(gui_FlashWrite::SEC_8, gui_FlashWrite::SEC_9);
 
 	ScreenMain = new MainScreenClass;
@@ -21,13 +22,13 @@ Gui::Gui()
 	ScreenTopeniVikend = new TopeniScreenClass(true);
 	ScreenVoda = new VodaScreenClass;
 
+	gui_Screen::printActiveScreen();
+
 	rtcClass::Init();
 	delej = new delay_class(pica, this, 150);
 	del_rtcRefresh = new delay_class(rtcClass::TimeShow, 0, 20000);
-	//del_logicRefresh = new delay_class(Logic::logika_refresh, 0, 1000);
 	del_jenom = new delay_class(rtcClass::TimeShow, 0, 500, true);	//poprvé
 	del_returnMain = new delay_class(ReturnMain, this, 10000);
-
 }
 
 void Gui::pica(void * data)

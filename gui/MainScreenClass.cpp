@@ -155,7 +155,7 @@ MainScreenClass::MainScreenClass()
 	TeplotaDoma->SetText("");
 	TeplotaDoma->SetValue(23);
 	TeplotaDoma->SetConvFunction(conv_hours_minutes);
-	TeplotaDoma = screen->Register(TeplotaDoma);
+	TeplotaDoma = screen->Register(TeplotaDoma,true);
 
 	gui_Label be[4];
 
@@ -181,8 +181,7 @@ MainScreenClass::MainScreenClass()
 	be[2].AddSecondaryCoor(82, 110, screen);
 	be[2].SetFontSize(16);
 
-	screen->Register(&be[0], true);
-	screen->Register(&be[1], true);
+	screen->Register(&be[2], true);
 }
 
 void MainScreenClass::conv_days(char* data, int16_t value)

@@ -18,6 +18,7 @@ VodaScreenClass::VodaScreenClass()
 {
 	screen = new gui_Screen;
 	gui_Item pole[7];
+	gui_Item * koule[7];
 
 	pole[0].SetText("Hlidat t. ");
 	pole[0].SetValue(0);
@@ -80,12 +81,15 @@ VodaScreenClass::VodaScreenClass()
 			MenuScreenClass::MakeActiveCB);
 	pole[6].SetConvFunction(conv_dummy);
 
-	Teplota = &pole[1];
-	HlidatTeplotu = &pole[0];
-	HodinyZacit = &pole[2];
-	MinutyZacit = &pole[3];
-	HodinyKonec = &pole[4];
-	MinutyKonec = &pole[5];
+	for (int i = 0 ; i < 7 ; i++)
+		koule[i] = screen->Register(&pole[i],true);
+
+	Teplota = koule[1];
+	HlidatTeplotu = koule[0];
+	HodinyZacit = koule[2];
+	MinutyZacit = koule[3];
+	HodinyKonec = koule[4];
+	MinutyKonec = koule[5];
 }
 
 void VodaScreenClass::MakeActiveCB(void * item)
