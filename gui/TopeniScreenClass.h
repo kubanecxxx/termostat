@@ -17,6 +17,10 @@ public:
 	~TopeniScreenClass();
 	static void MakeActivePoPaCB(void * item);
 
+	GuiFramework::gui_Item * Hodiny[4];
+	GuiFramework::gui_Item * Minuty[4];
+	GuiFramework::gui_Item * Teploty[4];
+
 private:
 	void SwitchToTopeniVikend(void * data);
 

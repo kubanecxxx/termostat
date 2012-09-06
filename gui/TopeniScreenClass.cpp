@@ -54,7 +54,7 @@ TopeniScreenClass::TopeniScreenClass(bool weekend)
 
 		items[3 * i].GetSecondaryCoordinates()->SetX(X3);
 		items[3 * i].GetSecondaryCoordinates()->SetY(Y1 + 2 * (i - 1) * SIZEY);
-		screen->Register(&items[3 * i], true);
+		Hodiny[i] = screen->Register(&items[3 * i], true);
 
 		//minuty
 		items[3 * i + 1].SetPrimaryX(X2);
@@ -68,7 +68,7 @@ TopeniScreenClass::TopeniScreenClass(bool weekend)
 		items[3 * i + 1].GetSecondaryCoordinates()->SetX(X4);
 		items[3 * i + 1].GetSecondaryCoordinates()->SetY(
 				Y1 + 2 * (i - 1) * SIZEY);
-		screen->Register(&items[3 * i + 1], true);
+		Minuty[i] = screen->Register(&items[3 * i + 1], true);
 
 		//teploty
 		items[3 * i + 2].SetPrimaryX(XT);
@@ -78,30 +78,14 @@ TopeniScreenClass::TopeniScreenClass(bool weekend)
 		items[3 * i + 2].SetValue(3 * i);
 		items[3 * i + 2].SetConvFunction(conv_hours_minutes);
 		items[3 * i + 2].SetText("T:");
-		screen->Register(&items[3 * i + 2], true);
+		Teploty[i] = screen->Register(&items[3 * i + 2], true);
 
 		if (!weekend)
 		{
-			/*
-			 logika_Items->TopeniSetting.PoPa[i].CasH =
-			 items[3 * i].GetValueConstPointer();
-			 logika_Items->TopeniSetting.PoPa[i].CasM =
-			 items[3 * i + 1].GetValueConstPointer();
-			 logika_Items->TopeniSetting.PoPa[i].Teplota =
-			 items[3 * i + 2].GetValueConstPointer();
-			 */
 			screenPoPa = screen;
 		}
 		else
 		{
-			/*
-			 logika_Items->TopeniSetting.SoNe[i].CasH =
-			 items[3 * i].GetValueConstPointer();
-			 logika_Items->TopeniSetting.SoNe[i].CasM =
-			 items[3 * i + 1].GetValueConstPointer();
-			 logika_Items->TopeniSetting.SoNe[i].Teplota =
-			 items[3 * i + 2].GetValueConstPointer();
-			 */
 			screenSoNe = screen;
 		}
 
@@ -126,15 +110,15 @@ TopeniScreenClass::TopeniScreenClass(bool weekend)
 	{
 		temp = 7;
 		items[temp].SetText("So-Ne");
-			items[temp].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
-		 MakeActivePoPaCB);
+		items[temp].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
+				MakeActivePoPaCB);
 	}
 	else
 	{
 		temp = 13;
 		items[temp].SetText("Po-Pa");
 		items[temp].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
-			MakeActiveSoNeCB);
+				MakeActiveSoNeCB);
 	}
 	items[temp].SetShownValue(false);
 	items[temp].SetPrimaryX(10);

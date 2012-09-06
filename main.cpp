@@ -18,8 +18,8 @@ int main(void)
 
 	ui = new GUI::Gui;
 
-	//delay_class refresh_logic(Logic::logika_refresh, 0, 1000);
-	delay_class nic(blik, 0, 1000);
+	delay_class refresh_logic(Logic::logika_refresh, ui, 1000);
+	delay_class nic(blik, 0, 300);
 
 	//leds
 	palSetGroupMode(GPIOD, 0b1111, 12, PAL_MODE_OUTPUT_PUSHPULL);
@@ -29,6 +29,7 @@ int main(void)
 	while (TRUE)
 	{
 		virtual_timer.Play();
+		chThdSleepMilliseconds(1);
 	}
 
 	return 1;

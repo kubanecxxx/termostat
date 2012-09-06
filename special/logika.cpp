@@ -8,21 +8,14 @@
 #include "guiInclude.h"
 #include "logika.h"
 
-extern GUI::Gui * ui;
-
-Logic::logika_ItemsTypedef Logic::logika_ItemsReal;
-Logic::logika_ItemsTypedef * Logic::logika_Items = &logika_ItemsReal;
+GUI::Gui * Logic::ui;
+Logic::logika_KotelStateTypedef Logic::Kotel;
 
 void Logic::logika_refresh(void * data)
 {
-	(void) data;
-	logika_GetKotelState();
-}
+	ui = (GUI::Gui *) data;
 
-Logic::logika_KotelStateTypedef Logic::logika_GetKotelState(void)
-{
-
-	Program program = (Program) ui->ScreenMain->Program->GetValue();
+	Program_t program = (Program_t) ui->ScreenMain->Program->GetValue();
 	logika_KotelStateTypedef temp;
 	int16_t teplota;
 
@@ -43,7 +36,7 @@ Logic::logika_KotelStateTypedef Logic::logika_GetKotelState(void)
 		temp = logika_GetKotelVodaState();
 		break;
 	case PROGRAM_TOPENI:
-		temp = logika_GetKotelTopeniState(&teplota);
+		temp = logika_GetKotelTopeniState(teplota);
 		ui->ScreenMain->TeplotaChtena->SetValue(teplota);
 		ui->ScreenMain->TeplotaChtena->SetShownGlobal(true);
 		break;
@@ -77,7 +70,12 @@ Logic::logika_KotelStateTypedef Logic::logika_GetKotelState(void)
 		ui->ScreenMain->TeplotaChtena->printItem();
 	}
 
-	return temp;
+	Kotel = temp;
+}
+
+Logic::logika_KotelStateTypedef Logic::logika_GetKotelState(void)
+{
+	return Kotel;
 }
 
 Logic::logika_KotelStateTypedef Logic::logika_GetKotelVodaState(void)
@@ -113,7 +111,7 @@ Logic::logika_KotelStateTypedef Logic::logika_GetKotelVodaState(void)
 }
 
 Logic::logika_KotelStateTypedef Logic::logika_GetKotelTopeniState(
-		int16_t * teplota)
+		int16_t & teplota)
 {
 	int16_t Teplota = ui->ScreenMain->TeplotaDole->GetValue();
 	int16_t Den = ui->ScreenMain->Den->GetValue();
@@ -123,48 +121,37 @@ Logic::logika_KotelStateTypedef Logic::logika_GetKotelTopeniState(
 	uint16_t i;
 
 	logika_KotelStateTypedef kotel = NETOPIT;
+
+	int16_t temp;
+	GUI::TopeniScreenClass * topic;
+
 	//dny jsou 1-7 Po,Ut
 	if (Den == 6 || Den == 7)
 	{
-		//sobota neděle
-		for (i = 0; i < 2; i++)
-		{
-			Cas_temp = *(logika_Items->TopeniSetting.SoNe[i].CasH) * 60
-					+ *(logika_Items->TopeniSetting.SoNe[i].CasM);
-			Cas_temp2 = *(logika_Items->TopeniSetting.SoNe[(i + 1) % 2].CasH)
-					* 60
-					+ *(logika_Items->TopeniSetting.SoNe[(i + 1) % 2].CasM);
-			Teplota_temp = *(logika_Items->TopeniSetting.SoNe[i].Teplota);
-
-			if (logika_KrucialniPodminka(Cas, Cas_temp, Cas_temp2) == TOPIT)
-			{
-				*teplota = Teplota_temp;
-				if (Teplota < Teplota_temp)
-				{
-					return TOPIT;
-				}
-			}
-		}
+		topic = ui->ScreenTopeniVikend;
+		temp = 2;
 	}
 	else
 	//přes tyden
 	{
-		for (i = 0; i < 4; i++)
-		{
-			Cas_temp = *(logika_Items->TopeniSetting.PoPa[i].CasH) * 60
-					+ *(logika_Items->TopeniSetting.PoPa[i].CasM);
-			Cas_temp2 = *(logika_Items->TopeniSetting.PoPa[(i + 1) % 4].CasH)
-					* 60
-					+ *(logika_Items->TopeniSetting.PoPa[(i + 1) % 4].CasM);
-			Teplota_temp = *(logika_Items->TopeniSetting.PoPa[i].Teplota);
+		temp = 4;
+		topic = ui->ScreenTopeni;
+	}
 
-			if (logika_KrucialniPodminka(Cas, Cas_temp, Cas_temp2) == TOPIT)
+	for (i = 0; i < temp; i++)
+	{
+		Cas_temp = (topic->Hodiny[i]->GetValue() * 60)
+				+ (topic->Minuty[i]->GetValue());
+		Cas_temp2 = (topic->Hodiny[(i + 1) % temp]->GetValue() * 60)
+				+ (topic->Minuty[(i + 1) % temp]->GetValue());
+		Teplota_temp = topic->Teploty[i]->GetValue();
+
+		if (logika_KrucialniPodminka(Cas, Cas_temp, Cas_temp2) == TOPIT)
+		{
+			teplota = Teplota_temp;
+			if (Teplota < Teplota_temp)
 			{
-				*teplota = Teplota_temp;
-				if (Teplota < Teplota_temp)
-				{
-					return TOPIT;
-				}
+				return TOPIT;
 			}
 		}
 	}

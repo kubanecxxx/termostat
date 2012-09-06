@@ -27,7 +27,7 @@ Gui::Gui()
 	rtcClass::Init();
 	delej = new delay_class(pica, this, 150);
 	del_rtcRefresh = new delay_class(rtcClass::TimeShow, 0, 20000);
-	del_jenom = new delay_class(rtcClass::TimeShow, 0, 500, true);	//poprvé
+	del_jenom = new delay_class(rtcClass::TimeShow, 0, 500, true); //poprvé
 	del_returnMain = new delay_class(ReturnMain, this, 10000);
 }
 

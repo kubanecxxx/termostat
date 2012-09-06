@@ -6,10 +6,10 @@
  */
 
 #include "guiInclude.h"
+#include "logika.h"
 
 namespace GUI
 {
-
 using namespace GuiFramework;
 
 gui_Screen * MainScreenClass::screen;
@@ -32,6 +32,7 @@ void MainScreenClass::MakeActiveCB(void * item)
  */
 MainScreenClass::MainScreenClass()
 {
+	const uint16_t SKOLOR = 0x07E0;
 	screen = new gui_Screen;
 
 	gui_Item cha[10];
@@ -56,9 +57,12 @@ MainScreenClass::MainScreenClass()
 	Hodiny->SetValueRounding(true);
 	Hodiny->SetPrimaryX(10);
 	Hodiny->SetPrimaryY(10);
+	Hodiny->SetTextColor(SKOLOR);
+	Hodiny->SetUseDefaultTextColor(false);
 	Hodiny->SetCallback(gui_Item::BUTTON_DOWN, gui_Item::CLICKED,
 			rtcClass::CallbackDown);
-	Hodiny->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtcClass::CallbackUp);
+	Hodiny->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED,
+			rtcClass::CallbackUp);
 	Hodiny = screen->Register(Hodiny, true);
 
 	Minuty->SetText(":");
@@ -71,7 +75,10 @@ MainScreenClass::MainScreenClass()
 	Minuty->SetPrimaryY(10);
 	Minuty->SetCallback(gui_Item::BUTTON_DOWN, gui_Item::CLICKED,
 			rtcClass::CallbackDown);
-	Minuty->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtcClass::CallbackUp);
+	Minuty->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED,
+			rtcClass::CallbackUp);
+	Minuty->SetTextColor(SKOLOR);
+	Minuty->SetUseDefaultTextColor(false);
 	Minuty = screen->Register(Minuty, true);
 
 	Den->SetText("");
@@ -84,7 +91,8 @@ MainScreenClass::MainScreenClass()
 	Den->SetConvFunction(conv_days);
 	Den->SetCallback(gui_Item::BUTTON_DOWN, gui_Item::CLICKED,
 			rtcClass::CallbackDown);
-	Den->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED, rtcClass::CallbackUp);
+	Den->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED,
+			rtcClass::CallbackUp);
 	Den = screen->Register(Den, true);
 
 	Program->SetLowLimit(0);
@@ -155,7 +163,7 @@ MainScreenClass::MainScreenClass()
 	TeplotaDoma->SetText("");
 	TeplotaDoma->SetValue(23);
 	TeplotaDoma->SetConvFunction(conv_hours_minutes);
-	TeplotaDoma = screen->Register(TeplotaDoma,true);
+	TeplotaDoma = screen->Register(TeplotaDoma, true);
 
 	gui_Label be[4];
 
@@ -201,23 +209,26 @@ void MainScreenClass::conv_days(char* data, int16_t value)
 
 void MainScreenClass::conv_topit(char * data, int16_t value)
 {
-	const char top[2][10] =
-	{
-	{ "Netopim" },
-	{ "Topim  " } };
-	strcpy(data, top[value]);
+	if (value == Logic::TOPIT)
+		strcpy(data, "Topim  ");
+	else if (value == Logic::NETOPIT)
+		strcpy(data, "Netopim");
+	else
+		strcpy(data, "");
 }
 
 void MainScreenClass::conv_program(char* data, int16_t value)
 {
-	const char programy[4][8] =
-	{
-	{ "Vypnuto" },
-	{ "Voda   " },
-	{ "Topeni " },
-	{ "Manual " } };
-
-	strcpy(data, programy[value]);
+	if (value == Logic::PROGRAM_VYPNOUT)
+		strcpy(data, "Vypnuto");
+	else if (value == Logic::PROGRAM_TOPENI)
+		strcpy(data, "Topeni ");
+	else if (value == Logic::PROGRAM_VODA)
+		strcpy(data, "Voda   ");
+	else if (value == Logic::PROGRAM_MANUAL)
+		strcpy(data, "Manual ");
+	else
+		strcpy(data, "");
 }
 
 }
