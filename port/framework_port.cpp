@@ -6,10 +6,10 @@
  *      @brief low level porting for gui framework
  */
 
-#include "framework_port.h"
 #include "ch.h"
 #include "hal.h"
-#include "st7735/st7735_2.h"
+#include "framework_port.h"
+#include "st7735.hpp"
 
 namespace GuiFramework
 {
@@ -46,7 +46,7 @@ uint32_t low_level_input_buttons(void)
 
 void low_level_button_init()
 {
-	lcdInit();
+	St7735::Init();
 	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOC, 14, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOC, 15, PAL_MODE_INPUT_PULLDOWN);
@@ -54,13 +54,13 @@ void low_level_button_init()
 
 void low_level_FillRGB(uint16_t color)
 {
-	lcdFillRGB(color);
+	St7735::FillRGB(color);
 }
 
 void low_level_lcdPutsStringBackground(const char * data, uint16_t x,
 		uint16_t y, uint16_t color, uint16_t background_color, uint8_t size)
 {
-	lcdPutsStringBackground(data, x, y, color, background_color, size);
+	St7735::PutsStringBackground(data, x, y, color, background_color, size);
 }
 
 void * gui_malloc(uint16_t size)

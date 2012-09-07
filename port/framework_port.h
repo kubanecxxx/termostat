@@ -8,7 +8,6 @@
 #ifndef GUI_PORT_H_
 #define GUI_PORT_H_
 
-#include "inttypes.h"
 namespace GuiFramework
 {
 /**

@@ -16,6 +16,10 @@
  * @{
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "ch.h"
 #include "hal.h"
 
@@ -48,6 +52,10 @@
 void low_level_output(uint8_t data);
 void low_level_init(void);
 void systickDelay(uint16_t time);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ST7735_PORT_H_ */
 
