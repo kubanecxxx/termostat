@@ -20,12 +20,12 @@ typedef enum
 
 static const gpio_t gpio[LAST] =
 {
-{ GPIOA, 5 },
-{ GPIOA, 6 },
-{ GPIOA, 7 },
-{ GPIOA, 4 },
-{ GPIOA, 8 },
-{ GPIOA, 9 } };
+{ GPIOB, 3 },
+{ GPIOB, 4 },
+{ GPIOB, 5 },
+{ GPIOB, 6 },
+{ GPIOD, 5 },
+{ GPIOD, 6 } };
 
 #define SPI_PIN_LOW(x) (gpio[x].gpio->BSRR.H.clear |= 1<<gpio[x].pin)
 #define SPI_PIN_HIGH(x) (gpio[x].gpio->BSRR.H.set  |= 1<<gpio[x].pin)
@@ -70,6 +70,7 @@ uint16_t low_level_spi_in_out(uint16_t cmd)
 
 /**
  * @todo časem by se to mohlo zkusit trochu inteligentně přes přerušeni a pak DMA
+ * šlo by sem naházet event wait a v externich přerušenich je broadcastit
  */
 void low_level_wait_ffit_high(void)
 {
