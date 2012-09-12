@@ -1,17 +1,37 @@
-#include "ch.h"
+#include "ch.hpp"
 #include "hal.h"
 
 #include "delayclass.h"
 #include "guiInclude.h"
-#include "st7735_2.h"
 #include "logika.h"
 
-void blik(void * data);
+static void blik(void * data);
 GUI::Gui * ui;
+
+/*
+ class mojeVlakno: public chibios_rt::EnhancedThread<100>
+ {
+ protected:
+ msg_t Main(void)
+ {
+ while (TRUE)
+ {
+ blik(NULL);
+ chThdSleepMilliseconds(500);
+ }
+ return 0;
+ }
+ public:
+ mojeVlakno(void) :
+ EnhancedThread("test")
+ {
+ }
+ };
+ */
 
 int main(void)
 {
-	chSysInit();
+	chibios_rt::System::Init();
 	halInit();
 
 	delay_process virtual_timer;
@@ -26,6 +46,8 @@ int main(void)
 
 	palSetPadMode(GPIOE, 4, PAL_MODE_OUTPUT_PUSHPULL);
 
+	//mojeVlakno cha;
+
 	while (TRUE)
 	{
 		virtual_timer.Play();
@@ -35,7 +57,7 @@ int main(void)
 	return 1;
 }
 
-void blik(void * data)
+static void blik(void * data)
 {
 	(void) data;
 //led blinking

@@ -139,7 +139,7 @@ MainScreenClass::MainScreenClass()
 
 	Topi->SetPrimaryX(60);
 	Topi->SetPrimaryY(140);
-	Topi->SetTextColor(0x8000);
+	Topi->SetTextColor(SKOLOR);
 	Topi->SetValue(0);
 	Topi->SetChoseable(false);
 	Topi->SetConvFunction(conv_topit);

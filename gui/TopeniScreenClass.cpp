@@ -124,7 +124,6 @@ TopeniScreenClass::TopeniScreenClass(bool weekend)
 	items[temp].SetPrimaryX(10);
 	items[temp].SetPrimaryY(10);
 	items[temp].SetConvFunction(conv_dummy);
-	screen->Register(&items[temp], true);
 
 	//zpet
 	items[temp - 1].SetText("Zpet");
@@ -134,7 +133,9 @@ TopeniScreenClass::TopeniScreenClass(bool weekend)
 	items[temp - 1].SetConvFunction(conv_dummy);
 	items[temp - 1].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
 			MenuScreenClass::MakeActiveCB);
+
 	screen->Register(&items[temp - 1], true);
+	screen->Register(&items[temp], true);
 }
 
 void TopeniScreenClass::MakeActivePoPaCB(void * item)
@@ -149,3 +150,4 @@ void TopeniScreenClass::MakeActiveSoNeCB(void * data)
 	screenSoNe->printScreen();
 }
 }
+

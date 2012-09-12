@@ -73,6 +73,7 @@ include $(CHIBIOS)/os/kernel/kernel.mk
 include framework_cpp/framework.mk
 include delay/del.mk
 include st7735/st7735.mk
+include rfm12b/rfm.mk
 
 #include $(CHIBIOS)/stm32f4_drivers/drivers.mk
 
@@ -82,7 +83,7 @@ LDSCRIPT= STM32F407xG.ld
 
 # krida setup 
 CPPFILES = $(wildcard port/*.cpp) $(wildcard gui/*.cpp) 
-CPPFILES += special/logika.cpp
+CPPFILES += $(wildcard special/*.cpp)  $(wildcard czujnik_temperatury/*.cpp)
 CFILES = $(wildcard port/*.c) $(wildcard gui/*.c)
 INCDIR += gui special port
 
@@ -93,8 +94,7 @@ CSRC += $(PORTSRC) \
        $(TESTSRC) \
        $(HALSRC) \
        $(PLATFORMSRC) \
-       $(BOARDSRC)  $(CFILES)
-       #$(STM_PERIPH)
+       $(BOARDSRC) $(CFILES) 
       
 CSRC +=  
 
@@ -102,7 +102,7 @@ CSRC +=
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
 CPPSRC += $(CPPFILES) main.cpp \
-	$(ST7735_WRAPPER)
+	$(ST7735_WRAPPER) $(CHIBIOS)/os/various/ch.cpp
 
 # C sources to be compiled in ARM mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler

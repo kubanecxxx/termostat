@@ -17,7 +17,8 @@
  */
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "ch.h"
@@ -25,8 +26,8 @@ extern "C" {
 
 //připadně mrsknout typedef 8, 16 pokud nejsou někde defaultně
 #ifdef ST7735_default_typedefs
-	typedef unsigned char uint8_t;
-	typedef unsigned int uint16_t;
+typedef unsigned char uint8_t;
+typedef unsigned int uint16_t;
 #endif
 
 #define bit_set(x,y)  (x->ODR |= 1<<y)
@@ -47,7 +48,6 @@ extern "C" {
 #define CLR_BL
 #define SET_BL
 
-
 //low level functions
 void low_level_output(uint8_t data);
 void low_level_init(void);
@@ -58,7 +58,6 @@ void systickDelay(uint16_t time);
 #endif
 
 #endif /* ST7735_PORT_H_ */
-
 
 /**
  * @}
