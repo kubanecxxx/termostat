@@ -65,7 +65,7 @@ PROJECT = termostat
 
 # Imported source files and paths
 CHIBIOS = $(HOME)/ChibiOS
-include $(CHIBIOS)/boards/ST_STM32F4_DISCOVERY/board.mk
+include board/board.mk
 include $(CHIBIOS)/os/hal/platforms/STM32F4xx/platform.mk
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F4xx/port.mk
@@ -85,7 +85,7 @@ LDSCRIPT= STM32F407xG.ld
 CPPFILES = $(wildcard port/*.cpp) $(wildcard gui/*.cpp) 
 CPPFILES += $(wildcard special/*.cpp)  $(wildcard czujnik_temperatury/*.cpp)
 CFILES = $(wildcard port/*.c) $(wildcard gui/*.c)
-INCDIR += gui special port
+INCDIR += gui special port czujnik_temperatury
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.

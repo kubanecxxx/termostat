@@ -68,19 +68,20 @@ int main(void)
 
 	//mojeVlakno cha;
 
-	rf_init();
-	rf_fifo_reset();
-	rf_writecmd(0);
-	rf_writecmd(0);
-	rf_writecmd(0);
-	rf_transmitter();
-
-	rfm::LinkLayer::Init(1);
-
+	/*
+	 rf_init();
+	 rf_fifo_reset();
+	 rf_writecmd(0);
+	 rf_writecmd(0);
+	 rf_writecmd(0);
+	 rf_transmitter();
+	 */
+	//rfm::LinkLayer::Init(1);
 	while (TRUE)
 	{
 		virtual_timer.Play();
 		chThdSleepMilliseconds(1);
+
 		//test();
 	}
 

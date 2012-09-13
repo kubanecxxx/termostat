@@ -190,6 +190,24 @@ MainScreenClass::MainScreenClass()
 	be[2].SetFontSize(16);
 
 	screen->Register(&be[2], true);
+
+	Init();
+
+	new delay_class(RefreshTemp, this, 10000);
+}
+
+void MainScreenClass::RefreshTemp(void * data)
+{
+	MainScreenClass * scren = (MainScreenClass*) data;
+	static int16_t prev;
+
+	int16_t temp = GetTemperature();
+	if (prev != temp)
+	{
+		scren->TeplotaDoma->SetValue(temp);
+		scren->TeplotaDoma->printItem();
+		prev = temp;
+	}
 }
 
 void MainScreenClass::conv_days(char* data, int16_t value)

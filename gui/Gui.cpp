@@ -25,8 +25,8 @@ Gui::Gui()
 	gui_Screen::printActiveScreen();
 
 	rtcClass::Init();
-	delej = new delay_class(pica, this, 150);
-	del_rtcRefresh = new delay_class(rtcClass::TimeShow, this, 20000);
+	new delay_class(pica, this, 150);
+	new delay_class(rtcClass::TimeShow, this, 20000);
 	del_returnMain = new delay_class(ReturnMain, this, 10000);
 
 	rtcClass::TimeShow(this);

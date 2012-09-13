@@ -11,7 +11,9 @@
 namespace GUI
 {
 
-class MainScreenClass: public GuiFramework::gui_New , public ConversionsClass
+class MainScreenClass: public GuiFramework::gui_New,
+		public ConversionsClass,
+		public Temperature
 {
 public:
 	MainScreenClass();
@@ -29,12 +31,12 @@ public:
 	GuiFramework::gui_Item * TeplotaDoma;
 	GuiFramework::gui_Item * TeplotaDole;
 
-
 private:
 	static GuiFramework::gui_Screen * screen;
 	static void conv_days(char* data, int16_t value);
 	static void conv_program(char* data, int16_t value);
 	static void conv_topit(char * data, int16_t value);
+	static void RefreshTemp(void * data);
 };
 }
 

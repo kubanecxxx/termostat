@@ -13,8 +13,10 @@
  * user has to include ONLY this file
  */
 
+#include "ch.hpp"
 #include "delayclass.h"
 #include "guiCommon.h"
+#include "Temperature.h"
 #include "commonConversions.h"
 #include "MainScreenClass.h"
 #include "MenuScreenClass.h"
