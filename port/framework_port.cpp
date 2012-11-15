@@ -35,11 +35,11 @@ namespace GuiFramework
 uint32_t low_level_input_buttons(void)
 {
 	if (palReadPad(GPIOA,0))
-		return 0;
-	else if (palReadPad(GPIOC,14))
-		return 1;
-	else if (palReadPad(GPIOC,15))
 		return 2;
+	else if (palReadPad(GPIOD,0))
+		return 0;
+	else if (palReadPad(GPIOD,4))
+		return 1;
 	else
 		return -1;
 }
@@ -48,8 +48,10 @@ void low_level_button_init()
 {
 	St7735::Init();
 	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_PULLDOWN);
-	palSetPadMode(GPIOC, 14, PAL_MODE_INPUT_PULLDOWN);
-	palSetPadMode(GPIOC, 15, PAL_MODE_INPUT_PULLDOWN);
+	palSetPadMode(GPIOD, 0, PAL_MODE_INPUT_PULLDOWN);
+	palSetPadMode(GPIOD, 4, PAL_MODE_INPUT_PULLDOWN);
+	palSetPadMode(GPIOD,2,PAL_MODE_OUTPUT_PUSHPULL);
+	palSetPad(GPIOD,2);
 }
 
 void low_level_FillRGB(uint16_t color)

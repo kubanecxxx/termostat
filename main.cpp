@@ -67,7 +67,7 @@ int main(void)
 	palSetPadMode(GPIOE, 4, PAL_MODE_OUTPUT_PUSHPULL);
 
 	//mojeVlakno cha;
-
+#if 0
 	rf_init();
 	rf_fifo_reset();
 	rf_writecmd(0);
@@ -76,6 +76,7 @@ int main(void)
 	rf_transmitter();
 
 	rfm::LinkLayer::Init(1);
+#endif
 
 	while (TRUE)
 	{
