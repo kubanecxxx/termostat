@@ -33,16 +33,16 @@ typedef unsigned int uint16_t;
 #define bit_set(x,y)  (x->ODR |= 1<<y)
 #define bit_clr(x,y)  (x->ODR &= ~ (1<<y))
 
-#define CLR_RS     	bit_clr(GPIOB,1)
-#define SET_RS     	bit_set(GPIOB,1)
-#define CLR_SDA    	bit_clr(GPIOA,6)
-#define SET_SDA    	bit_set(GPIOA,6)
-#define CLR_SCL    	bit_clr(GPIOA,7)
-#define SET_SCL    	bit_set(GPIOA,7)
-#define CLR_CS     	bit_clr(GPIOC,5)
-#define SET_CS     	bit_set(GPIOC,5)
-#define CLR_RES		bit_clr(GPIOB,0)
-#define SET_RES		bit_set(GPIOB,0)
+#define CLR_RS     	bit_clr(GPIOE,15)
+#define SET_RS     	bit_set(GPIOE,15)
+#define CLR_SDA    	bit_clr(GPIOE,14)
+#define SET_SDA    	bit_set(GPIOE,14)
+#define CLR_SCL    	bit_clr(GPIOE,13)
+#define SET_SCL    	bit_set(GPIOE,13)
+#define CLR_CS     	bit_clr(GPIOE,11)
+#define SET_CS     	bit_set(GPIOE,11)
+#define CLR_RES		bit_clr(GPIOE,12)
+#define SET_RES		bit_set(GPIOE,12)
 
 //backlight
 #define CLR_BL

@@ -96,17 +96,19 @@ int main(void)
 	palSetPadMode(GPIOE, 4, PAL_MODE_OUTPUT_PUSHPULL);
 
 	//mojeVlakno cha;
-
-	/*
-	 rf_init();
-	 rf_fifo_reset();
-	 rf_writecmd(0);
-	 rf_writecmd(0);
-	 rf_writecmd(0);
-	 rf_transmitter();
-	 */
-	//rfm::LinkLayer::Init(1);
+	//
 	extStart(&EXTD1, &extcfg);
+#if 0
+	rf_init();
+	rf_fifo_reset();
+	rf_writecmd(0);
+	rf_writecmd(0);
+	rf_writecmd(0);
+	rf_transmitter();
+
+	rfm::LinkLayer::Init(1);
+#endif
+
 	while (TRUE)
 	{
 		virtual_timer.Play();
