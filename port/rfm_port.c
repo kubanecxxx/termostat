@@ -41,6 +41,8 @@ void low_level_spi_init(void)
 	rfmSetPadMode(NSS, PAL_MODE_OUTPUT_PUSHPULL);
 	rfmSetPadMode(FFIT, PAL_MODE_INPUT);
 	rfmSetPadMode(NIRQ, PAL_MODE_INPUT);
+
+	extChannelEnable(&EXTD1, FFIT);
 }
 
 uint16_t low_level_spi_in_out(uint16_t cmd)
@@ -72,10 +74,21 @@ uint16_t low_level_spi_in_out(uint16_t cmd)
  * @todo časem by se to mohlo zkusit trochu inteligentně přes přerušeni a pak DMA
  * šlo by sem naházet event wait a v externich přerušenich je broadcastit
  */
+static Thread * ffit_thd = NULL;
+
+void rf_ffitThreadInit(void)
+{
+	if (ffit_thd == NULL )
+		ffit_thd = chThdSelf();
+}
+
 void low_level_wait_ffit_high(void)
 {
-	while (SPI_PIN_READ(FFIT) == 0)
-		continue;
+	chEvtWaitAnyTimeout(1, MS2ST(10) );
+	/*
+	 while (SPI_PIN_READ(FFIT) == 0)
+	 continue;
+	 */
 }
 
 void low_level_wait_nirq_low(void)
@@ -84,3 +97,12 @@ void low_level_wait_nirq_low(void)
 		continue;
 }
 
+void ffit_exti(EXTDriver *extp, expchannel_t channel)
+{
+	(void) channel;
+	(void) extp;
+	chSysLockFromIsr()
+	;
+	chEvtSignalFlagsI(ffit_thd, 0b11);
+	chSysUnlockFromIsr();
+}

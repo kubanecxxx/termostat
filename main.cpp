@@ -4,8 +4,37 @@
 #include "delayclass.h"
 #include "guiInclude.h"
 #include "logika.h"
-#include "rfm.h"
 #include "rfmIncludeCpp.h"
+
+/*
+ * external interrupt system config
+ */
+static const EXTConfig extcfg =
+{
+{
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ FFIT_EXTI },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL },
+{ EXT_CH_MODE_DISABLED, NULL } } };
 
 static void blik(void * data);
 GUI::Gui * ui;
@@ -77,6 +106,7 @@ int main(void)
 	 rf_transmitter();
 	 */
 	//rfm::LinkLayer::Init(1);
+	extStart(&EXTD1, &extcfg);
 	while (TRUE)
 	{
 		virtual_timer.Play();
