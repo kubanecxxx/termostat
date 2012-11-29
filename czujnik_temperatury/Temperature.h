@@ -13,10 +13,11 @@
 class Temperature
 {
 private:
-
+	static int16_t temperature;
 public:
 	static void Init(void);
 	static int16_t GetTemperature(void);
+	static void RefreshTemperature(void);
 };
 
 #endif /* TEMPERATURE_H_ */

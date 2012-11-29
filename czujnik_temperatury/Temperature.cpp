@@ -12,6 +12,8 @@
 static const I2CConfig i2conf =
 { OPMODE_I2C, 20000, STD_DUTY_CYCLE };
 
+int16_t Temperature::temperature = 0;
+
 void Temperature::Init()
 {
 	uint8_t txbuf[3];
@@ -25,6 +27,11 @@ void Temperature::Init()
 
 int16_t Temperature::GetTemperature()
 {
+	return temperature;
+}
+
+void Temperature::RefreshTemperature()
+{
 	uint8_t txbuf[2];
 	uint8_t rxbuf[2];
 
@@ -32,7 +39,7 @@ int16_t Temperature::GetTemperature()
 	txbuf[0] = 1;
 	txbuf[1] = 0;
 	i2cMasterTransmit(&I2CD1, I2C_TEMP_ADDRESS, txbuf, 2, NULL, 0);
-	chibios_rt::BaseThread::Sleep(MS2ST(200));
+	chibios_rt::BaseThread::Sleep(MS2ST(200) );
 
 	txbuf[0] = 0;
 
@@ -43,5 +50,5 @@ int16_t Temperature::GetTemperature()
 	txbuf[1] = 1;
 	i2cMasterTransmit(&I2CD1, I2C_TEMP_ADDRESS, txbuf, 2, NULL, 0);
 
-	return rxbuf[0];
+	temperature = rxbuf[0];
 }

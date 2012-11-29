@@ -191,9 +191,9 @@ MainScreenClass::MainScreenClass()
 
 	screen->Register(&be[2], true);
 
-	Init();
+	Temperature::Init();
 
-	new delay_class(RefreshTemp, this, 10000);
+	new delay_class(RefreshTemp, this, 5000);
 }
 
 void MainScreenClass::RefreshTemp(void * data)
@@ -201,7 +201,8 @@ void MainScreenClass::RefreshTemp(void * data)
 	MainScreenClass * scren = (MainScreenClass*) data;
 	static int16_t prev;
 
-	int16_t temp = GetTemperature();
+	Temperature::RefreshTemperature();
+	int16_t temp = Temperature::GetTemperature();
 	if (prev != temp)
 	{
 		scren->TeplotaDoma->SetValue(temp);

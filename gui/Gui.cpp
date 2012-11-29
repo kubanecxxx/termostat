@@ -25,14 +25,14 @@ Gui::Gui()
 	gui_Screen::printActiveScreen();
 
 	rtcClass::Init();
-	new delay_class(pica, this, 150);
+	new delay_class(scan, this, 150);
 	new delay_class(rtcClass::TimeShow, this, 20000);
 	del_returnMain = new delay_class(ReturnMain, this, 10000);
 
 	rtcClass::TimeShow(this);
 }
 
-void Gui::pica(void * data)
+void Gui::scan(void * data)
 {
 	Gui * cha = (Gui *) data;
 	if (GuiFramework::gui_Screen::ButtonScan())

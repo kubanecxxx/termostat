@@ -97,8 +97,9 @@ int main(void)
 
 	//mojeVlakno cha;
 	//
-	extStart(&EXTD1, &extcfg);
 #if 0
+	extStart(&EXTD1, &extcfg);
+
 	rf_init();
 	rf_fifo_reset();
 	rf_writecmd(0);

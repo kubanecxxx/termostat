@@ -28,7 +28,7 @@ public:
 private:
 
 
-	static void pica(void * data);
+	static void scan(void * data);
 	static void ReturnMain(void * data);
 };
 }
