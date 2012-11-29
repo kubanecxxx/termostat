@@ -11,7 +11,7 @@
 namespace GUI
 {
 
-class VodaScreenClass: public GuiFramework::gui_New, public ConversionsClass
+class VodaScreenClass: public ConversionsClass
 {
 public:
 	VodaScreenClass();

@@ -34,7 +34,7 @@ namespace GuiFramework
  */
 uint32_t low_level_input_buttons(void)
 {
-	if (palReadPad(GPIOA,0))
+	if (palReadPad(GPIOB,2))
 		return 2;
 	else if (palReadPad(GPIOD,0))
 		return 0;
@@ -50,8 +50,12 @@ void low_level_button_init()
 	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOD, 0, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOD, 4, PAL_MODE_INPUT_PULLDOWN);
-	palSetPadMode(GPIOD,2,PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPad(GPIOD,2);
+	palSetPadMode(GPIOD, 2, PAL_MODE_OUTPUT_PUSHPULL);
+	palSetPad(GPIOD, 2);
+
+	palSetPadMode(GPIOB, 2, PAL_MODE_INPUT_PULLDOWN);
+	palSetPadMode(GPIOB, 0, PAL_MODE_OUTPUT_PUSHPULL);
+	palSetPad(GPIOB, 0);
 }
 
 void low_level_FillRGB(uint16_t color)
@@ -65,15 +69,9 @@ void low_level_lcdPutsStringBackground(const char * data, uint16_t x,
 	St7735::PutsStringBackground(data, x, y, color, background_color, size);
 }
 
-void * gui_malloc(uint16_t size)
-{
-	return chCoreAlloc(size);
-}
+///musí to tady být pokud se nepoužíva c++ linker
+extern "C" void __cxa_pure_virtual() { while (1); }
 
-void gui_freeMemory(void * data)
-{
-	(void) data;
-}
 }
 /**
  * @}

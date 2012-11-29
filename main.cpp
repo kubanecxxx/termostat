@@ -36,28 +36,20 @@ static const EXTConfig extcfg =
 { EXT_CH_MODE_DISABLED, NULL },
 { EXT_CH_MODE_DISABLED, NULL } } };
 
+void* operator new(size_t sz)
+{
+	return chCoreAlloc(sz);
+}
+
+void operator delete(void* m)
+{
+	(void) m;
+}
+
 static void blik(void * data);
 GUI::Gui * ui;
 
-class mojeVlakno: public chibios_rt::EnhancedThread<100>
-{
-protected:
-	msg_t Main(void)
-	{
-		while (TRUE)
-		{
-			blik(NULL);
-			chThdSleepMilliseconds(500);
-		}
-		return 0;
-	}
-public:
-	mojeVlakno(void) :
-			EnhancedThread("test")
-	{
-	}
-};
-
+#if 0
 void test(void)
 {
 	uint8_t checksum = 0;
@@ -77,6 +69,7 @@ void test(void)
 	rf_send(0xAA);
 	rf_send(0xAA);
 }
+#endif
 
 int main(void)
 {
@@ -113,7 +106,6 @@ int main(void)
 	{
 		virtual_timer.Play();
 		chThdSleepMilliseconds(1);
-
 		//test();
 	}
 
@@ -123,7 +115,6 @@ int main(void)
 static void blik(void * data)
 {
 	(void) data;
-//led blinking
 	palTogglePort(GPIOD, 1 << 13 | 1 << 14);
 }
 
