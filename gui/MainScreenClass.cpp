@@ -206,7 +206,7 @@ void MainScreenClass::RefreshTemp(void * data)
 	if (prev != temp)
 	{
 		scren->TeplotaDoma->SetValue(temp);
-		scren->TeplotaDoma->printItem();
+		scren->TeplotaDoma->print();
 		prev = temp;
 	}
 }

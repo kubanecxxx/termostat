@@ -53,13 +53,13 @@ void Logic::logika_refresh(void * data)
 	{
 		prev_topit = temp;
 		ui->ScreenMain->Topi->SetValue(temp);
-		ui->ScreenMain->Topi->printItem();
+		ui->ScreenMain->Topi->print();
 	}
 
 	if (prev_show != ui->ScreenMain->TeplotaManual->IsShownGlobal())
 	{
 		prev_show = ui->ScreenMain->TeplotaManual->IsShownGlobal();
-		ui->ScreenMain->TeplotaManual->printItem();
+		ui->ScreenMain->TeplotaManual->print();
 	}
 
 	if (prev_teplota != ui->ScreenMain->TeplotaChtena->GetValue()
@@ -67,7 +67,7 @@ void Logic::logika_refresh(void * data)
 	{
 		prev_teplota = ui->ScreenMain->TeplotaChtena->GetValue();
 		prev_show2 = ui->ScreenMain->TeplotaChtena->IsShownGlobal();
-		ui->ScreenMain->TeplotaChtena->printItem();
+		ui->ScreenMain->TeplotaChtena->print();
 	}
 
 	Kotel = temp;

@@ -32,8 +32,6 @@ void low_level_FillRGB(uint16_t color);
 void low_level_lcdPutsStringBackground(const char * data, uint16_t x,
 		uint16_t y, uint16_t color, uint16_t background_color, uint8_t size);
 
-void * gui_malloc(uint16_t size);
-void gui_freeMemory(void * data);
 }
 /**
  * @}

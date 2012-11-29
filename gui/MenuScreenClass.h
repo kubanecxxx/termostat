@@ -11,7 +11,7 @@
 namespace GUI
 {
 
-class MenuScreenClass: public GuiFramework::gui_New, public ConversionsClass
+class MenuScreenClass:public ConversionsClass
 {
 public:
 	MenuScreenClass();

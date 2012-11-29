@@ -11,7 +11,7 @@
 namespace GUI
 {
 
-class MainScreenClass: public GuiFramework::gui_New,
+class MainScreenClass:
 		public ConversionsClass,
 		public Temperature
 {

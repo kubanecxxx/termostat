@@ -63,6 +63,9 @@ void rtcClass::Init(void)
 	rtcSetTime(&RTCD1, &time);
 }
 
+/**
+ * @brief refrešne čas
+ */
 void rtcClass::TimeShow(void * data)
 {
 	ui = (GUI::Gui*) data;
@@ -71,13 +74,13 @@ void rtcClass::TimeShow(void * data)
 	rtcGetTime(&RTCD1, &time);
 
 	ui->ScreenMain->Minuty->SetValue(GetMinutes(time.tv_time));
-	ui->ScreenMain->Minuty->printItem();
+	ui->ScreenMain->Minuty->print();
 
 	ui->ScreenMain->Hodiny->SetValue(GetHours(time.tv_time));
-	ui->ScreenMain->Hodiny->printItem();
+	ui->ScreenMain->Hodiny->print();
 
 	ui->ScreenMain->Den->SetValue(GetDay(time.tv_date));
-	ui->ScreenMain->Den->printItem();
+	ui->ScreenMain->Den->print();
 }
 
 void rtcClass::zlepsovak(gui_Item & item)

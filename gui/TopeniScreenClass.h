@@ -10,7 +10,7 @@
 
 namespace GUI
 {
-class TopeniScreenClass: public ConversionsClass, public GuiFramework::gui_New
+class TopeniScreenClass: public ConversionsClass
 {
 public:
 	TopeniScreenClass(bool weekend = false);

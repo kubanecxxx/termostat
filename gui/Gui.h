@@ -11,7 +11,7 @@
 namespace GUI
 {
 
-class Gui: public GuiFramework::gui_New
+class Gui
 {
 public:
 
