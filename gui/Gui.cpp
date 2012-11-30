@@ -13,7 +13,8 @@ using namespace GuiFramework;
 
 Gui::Gui()
 {
-	low_level_button_init();
+	port::init();
+
 	gui_FlashWrite::Erase(gui_FlashWrite::SEC_8, gui_FlashWrite::SEC_9);
 
 	ScreenMain = new MainScreenClass;

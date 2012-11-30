@@ -32,7 +32,7 @@ namespace GuiFramework
  * @brief low level function for scanning buttons
  * @return bit state of buttons
  */
-uint32_t low_level_input_buttons(void)
+uint32_t port::input_buttons(void)
 {
 	if (palReadPad(GPIOB,2))
 		return 2;
@@ -44,7 +44,7 @@ uint32_t low_level_input_buttons(void)
 		return -1;
 }
 
-void low_level_button_init()
+void port::init()
 {
 	St7735::Init();
 	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_PULLDOWN);
@@ -58,19 +58,14 @@ void low_level_button_init()
 	palSetPad(GPIOB, 0);
 }
 
-void low_level_FillRGB(uint16_t color)
-{
-	St7735::FillRGB(color);
-}
 
-void low_level_lcdPutsStringBackground(const char * data, uint16_t x,
-		uint16_t y, uint16_t color, uint16_t background_color, uint8_t size)
-{
-	St7735::PutsStringBackground(data, x, y, color, background_color, size);
-}
 
 ///musí to tady být pokud se nepoužíva c++ linker
-extern "C" void __cxa_pure_virtual() { while (1); }
+extern "C" void __cxa_pure_virtual()
+{
+	while (1)
+		;
+}
 
 }
 /**
