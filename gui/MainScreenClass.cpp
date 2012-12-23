@@ -7,6 +7,7 @@
 
 #include "guiInclude.h"
 #include "logika.h"
+#include "Wireless.h"
 
 namespace GUI
 {
@@ -203,11 +204,14 @@ void MainScreenClass::RefreshTemp(void * data)
 
 	Temperature::RefreshTemperature();
 	int16_t temp = Temperature::GetTemperature();
-	if (prev != temp)
+	//if (prev != temp)
 	{
 		scren->TeplotaDoma->SetValue(temp);
 		scren->TeplotaDoma->print();
 		prev = temp;
+
+		scren->TeplotaDole->SetValue(Wireless::GetTemperature());
+		scren->TeplotaDole->print();
 	}
 }
 

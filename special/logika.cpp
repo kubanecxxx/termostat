@@ -7,9 +7,11 @@
 
 #include "guiInclude.h"
 #include "logika.h"
+#include "Wireless.h"
 
 GUI::Gui * Logic::ui;
 Logic::logika_KotelStateTypedef Logic::Kotel;
+
 
 void Logic::logika_refresh(void * data)
 {
@@ -49,12 +51,15 @@ void Logic::logika_refresh(void * data)
 		break;
 	}
 
-	if (prev_topit != temp)
+	//if (prev_topit != temp)
 	{
+		ui->ScreenMain->Topi->SetShownGlobal(Wireless::Responding());
 		prev_topit = temp;
 		ui->ScreenMain->Topi->SetValue(temp);
 		ui->ScreenMain->Topi->print();
 	}
+
+	Wireless::SetTopit(temp);
 
 	if (prev_show != ui->ScreenMain->TeplotaManual->IsShownGlobal())
 	{

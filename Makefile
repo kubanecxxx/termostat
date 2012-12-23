@@ -20,7 +20,7 @@ endif
 
 # Enable this if you want the linker to remove unused code and data
 ifeq ($(USE_LINK_GC),)
-  USE_LINK_GC = no
+  USE_LINK_GC = yes
 endif
 
 # If enabled, this option allows to compile the application in THUMB mode.
@@ -84,8 +84,10 @@ LDSCRIPT= STM32F407xG.ld
 # krida setup 
 CPPFILES = $(wildcard port/*.cpp) $(wildcard gui/*.cpp) 
 CPPFILES += $(wildcard special/*.cpp)  $(wildcard czujnik_temperatury/*.cpp)
+CPPFILES += $(wildcard wireless/*.cpp)
 CFILES = $(wildcard port/*.c) $(wildcard gui/*.c)
-INCDIR += gui special port czujnik_temperatury
+
+INCDIR += gui special port czujnik_temperatury wireless
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -178,7 +180,7 @@ CPPWARN = -Wall -Wextra
 #
 
 # List all default C defines here, like -D_DEBUG=1
-DDEFS =
+DDEFS = -DRFM_SENELA
 
 # List all default ASM defines here, like -D_DEBUG=1
 DADEFS =

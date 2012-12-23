@@ -153,7 +153,7 @@
  * @note    The default is @p TRUE.
  */
 #if !defined(CH_USE_SEMAPHORES) || defined(__DOXYGEN__)
-#define CH_USE_SEMAPHORES               FALSE
+#define CH_USE_SEMAPHORES               TRUE
 #endif
 
 /**
@@ -187,7 +187,7 @@
  * @note    The default is @p TRUE.
  */
 #if !defined(CH_USE_MUTEXES) || defined(__DOXYGEN__)
-#define CH_USE_MUTEXES                  FALSE
+#define CH_USE_MUTEXES                  TRUE
 #endif
 
 /**
@@ -268,7 +268,7 @@
  * @note    Requires @p CH_USE_SEMAPHORES.
  */
 #if !defined(CH_USE_MAILBOXES) || defined(__DOXYGEN__)
-#define CH_USE_MAILBOXES                FALSE
+#define CH_USE_MAILBOXES                TRUE
 #endif
 
 /**
@@ -328,7 +328,7 @@
  * @note    The default is @p TRUE.
  */
 #if !defined(CH_USE_MEMPOOLS) || defined(__DOXYGEN__)
-#define CH_USE_MEMPOOLS                 FALSE
+#define CH_USE_MEMPOOLS                 TRUE
 #endif
 
 /**

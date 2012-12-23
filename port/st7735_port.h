@@ -49,9 +49,9 @@ typedef unsigned int uint16_t;
 #define SET_BL
 
 //low level functions
-void low_level_output(uint8_t data);
+void low_level_output(uint8_t data)  __attribute__ ((optimize (0)));
 void low_level_init(void);
-void systickDelay(uint16_t time);
+void systickDelay(uint16_t time)  __attribute__ ((optimize (0)));
 
 #ifdef __cplusplus
 }

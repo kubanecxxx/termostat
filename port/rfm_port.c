@@ -18,14 +18,34 @@ typedef enum
 	SCK = 0, MISO, MOSI, NSS, FFIT, NIRQ, LAST
 } chatra;
 
+#ifndef RFM_DISCO
+#ifndef RFM_SENELA
+#error neni definovan kit
+#endif
+#endif
+
 static const gpio_t gpio[LAST] =
 {
-{ GPIOB, 3 },
-{ GPIOB, 4 },
-{ GPIOB, 5 },
-{ GPIOB, 6 },
-{ GPIOD, 5 },
-{ GPIOD, 6 } };
+#ifdef RFM_DISCO
+		//pinout na diškovery
+		{	GPIOB, 3},
+		{	GPIOB, 4},
+		{	GPIOB, 5},
+		{	GPIOB, 6},
+		{	GPIOD, 5},
+		{	GPIOD, 6}
+#endif
+
+#ifdef RFM_SENELA
+		//pinout na kitu senela
+		{	GPIOE, 1},
+		{	GPIOE, 3},
+		{	GPIOE, 2},
+		{	GPIOE, 0},
+		{	GPIOE, 5},
+		{	GPIOE, 4}
+#endif
+	};
 
 #define SPI_PIN_LOW(x) (gpio[x].gpio->BSRR.H.clear |= 1<<gpio[x].pin)
 #define SPI_PIN_HIGH(x) (gpio[x].gpio->BSRR.H.set  |= 1<<gpio[x].pin)
@@ -42,7 +62,6 @@ void low_level_spi_init(void)
 	rfmSetPadMode(FFIT, PAL_MODE_INPUT);
 	rfmSetPadMode(NIRQ, PAL_MODE_INPUT);
 
-	extChannelEnable(&EXTD1, FFIT);
 }
 
 uint16_t low_level_spi_in_out(uint16_t cmd)
@@ -52,12 +71,14 @@ uint16_t low_level_spi_in_out(uint16_t cmd)
 
 	SPI_PIN_LOW(SCK);
 	SPI_PIN_LOW(NSS);
+
 	for (i = 0; i < 16; i++)
 	{
 		if (cmd & 0x8000)
 			SPI_PIN_HIGH(MOSI);
 		else
 			SPI_PIN_LOW(MOSI);
+
 		SPI_PIN_HIGH(SCK);
 
 		recv <<= 1;
@@ -66,6 +87,7 @@ uint16_t low_level_spi_in_out(uint16_t cmd)
 		SPI_PIN_LOW(SCK);
 		cmd <<= 1;
 	}
+
 	SPI_PIN_HIGH(NSS);
 	return recv;
 }
@@ -76,25 +98,57 @@ uint16_t low_level_spi_in_out(uint16_t cmd)
  */
 static Thread * ffit_thd = NULL;
 
-void rf_ffitThreadInit(void)
+void rf_ffitThreadInit(Thread * thd)
 {
 	if (ffit_thd == NULL )
-		ffit_thd = chThdSelf();
+		ffit_thd = thd;
 }
 
-void low_level_wait_ffit_high(void)
+/*
+ * pokud bude timeout zapnuté tak vrátí nulu pokud vyprší
+ * pokud event někdo uvolni tak to vyhodi nějaky čislo
+ *
+ * s přerušenim a eventem to funguje hodně blbě
+ * asi na to musi byt dost rychlé procesor
+ *
+ * ideální by bylo dma na spi spouštěno právě ffit...
+ * a naopak posilání druhy dma spuštěny přimo nirq
+ *
+ * @note konstanta je spočitaná na 25MHz
+ */
+uint8_t low_level_wait_ffit_high(systime_t timeout)
 {
-	chEvtWaitAnyTimeout(1, MS2ST(10) );
-	/*
-	 while (SPI_PIN_READ(FFIT) == 0)
-	 continue;
-	 */
+#if 0
+	return chEvtWaitAnyTimeout(FFIT_EVENT_FLAG, MS2ST(timeout));
+#else
+	uint16_t j;
+	uint32_t i = timeout * 25;
+	if (timeout == TIME_INFINITE )
+		//return chEvtWaitAny(FFIT_EVENT_FLAG);
+		i = -1;
+	while (!SPI_PIN_READ(FFIT) && i--)
+	{
+		for (j = 0; j < 100; j++)
+		{
+			asm ("nop");
+		}
+	}
+
+	i++;
+	if (i)
+		return 1;
+	else
+		return 0;
+#endif
 }
 
 void low_level_wait_nirq_low(void)
 {
 	while (SPI_PIN_READ(NIRQ) == 1)
+	{
+		//chThdSleepMicroseconds(100);
 		continue;
+	}
 }
 
 void ffit_exti(EXTDriver *extp, expchannel_t channel)
@@ -103,6 +157,6 @@ void ffit_exti(EXTDriver *extp, expchannel_t channel)
 	(void) extp;
 	chSysLockFromIsr()
 	;
-	chEvtSignalFlagsI(ffit_thd, 0b11);
+	chEvtSignalFlagsI(ffit_thd, FFIT_EVENT_FLAG);
 	chSysUnlockFromIsr();
 }
