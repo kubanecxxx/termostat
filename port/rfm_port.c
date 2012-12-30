@@ -47,8 +47,8 @@ static const gpio_t gpio[LAST] =
 #endif
 	};
 
-#define SPI_PIN_LOW(x) (gpio[x].gpio->BSRR.H.clear |= 1<<gpio[x].pin)
-#define SPI_PIN_HIGH(x) (gpio[x].gpio->BSRR.H.set  |= 1<<gpio[x].pin)
+#define SPI_PIN_LOW(x) (gpio[x].gpio->BRR |= 1<<gpio[x].pin)
+#define SPI_PIN_HIGH(x) (gpio[x].gpio->BSRR  |= 1<<gpio[x].pin)
 #define SPI_PIN_READ(x) ((gpio[x].gpio->IDR >> gpio[x].pin) & 1)
 
 #define rfmSetPadMode(co, jak) palSetPadMode(gpio[co].gpio,gpio[co].pin,jak)
