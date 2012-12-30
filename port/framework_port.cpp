@@ -47,6 +47,10 @@ uint32_t port::input_buttons(void)
 void port::init()
 {
 	St7735::Init();
+	while(1)
+	{
+		asm ("nop");
+	}
 	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOD, 0, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOD, 4, PAL_MODE_INPUT_PULLDOWN);

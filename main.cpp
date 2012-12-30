@@ -7,8 +7,6 @@
 #include "rfmIncludeCpp.h"
 #include "Wireless.h"
 
-
-
 void* operator new(size_t sz)
 {
 	return chCoreAlloc(sz);

@@ -49,7 +49,7 @@ void low_level_output(uint8_t data)
  */
 void low_level_init(void)
 {
-	palSetGroupMode(GPIOE,0b11111 , 11,PAL_MODE_OUTPUT_PUSHPULL);
+	palSetGroupMode(GPIOA,0b11111 , 0,PAL_MODE_OUTPUT_PUSHPULL);
 }
 
 /**
