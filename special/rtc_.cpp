@@ -53,13 +53,13 @@ void rtcClass::Init(void)
 	rtcInit();
 
 	RTCTime time;
-
+#if 0
 	SetMinutes(time.tv_time, 58);
 	SetHours(time.tv_time, 23);
 	SetDay(time.tv_date, 6);
 	time.h12 = FALSE;
 	time.tv_time &= ~ (1 << 22);
-
+#endif
 	rtcSetTime(&RTCD1, &time);
 }
 
@@ -72,7 +72,7 @@ void rtcClass::TimeShow(void * data)
 	RTCTime time;
 
 	rtcGetTime(&RTCD1, &time);
-
+#if 0
 	ui->ScreenMain->Minuty->SetValue(GetMinutes(time.tv_time));
 	ui->ScreenMain->Minuty->print();
 
@@ -81,6 +81,7 @@ void rtcClass::TimeShow(void * data)
 
 	ui->ScreenMain->Den->SetValue(GetDay(time.tv_date));
 	ui->ScreenMain->Den->print();
+	#endif
 }
 
 void rtcClass::zlepsovak(gui_Item & item)
@@ -90,7 +91,7 @@ void rtcClass::zlepsovak(gui_Item & item)
 
 	RTCTime time;
 	rtcGetTime(&RTCD1, &time);
-
+#if 0
 	switch (temp)
 	{
 	case 7:
@@ -106,6 +107,7 @@ void rtcClass::zlepsovak(gui_Item & item)
 
 	time.h12 = FALSE;
 	rtcSetTime(&RTCD1, &time);
+	#endif
 }
 
 void rtcClass::CallbackUp(void * data)
