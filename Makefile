@@ -66,9 +66,9 @@ PROJECT = termostat
 # Imported source files and paths
 CHIBIOS = $(HOME)/ChibiOS
 include board/board.mk
-include $(CHIBIOS)/os/hal/platforms/STM32F4xx/platform.mk
+include $(CHIBIOS)/os/hal/platforms/STM32F1xx/platform.mk
 include $(CHIBIOS)/os/hal/hal.mk
-include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F4xx/port.mk
+include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F1xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
 include framework_cpp/framework.mk
 include delay/del.mk
@@ -78,7 +78,8 @@ include rfm12b/rfm.mk
 #include $(CHIBIOS)/stm32f4_drivers/drivers.mk
 
 # Define linker script file here
-LDSCRIPT= STM32F407xG.ld
+LDSCRIPT= STM32F101C8T6.ld
+#LDSCRIPT= STM32F407xG.ld
 #LDSCRIPT= $(PORTLD)/STM32F407xG_CCM.ld
 
 # krida setup 

@@ -1,5 +1,5 @@
 # List of all the board related files.
-BOARDSRC = board/board.c
+BOARDSRC = ${CHIBIOS}/boards/ST_STM32VL_DISCOVERY/board.c
 
 # Required include directories
-BOARDINC = board
+BOARDINC = ${CHIBIOS}/boards/ST_STM32VL_DISCOVERY
