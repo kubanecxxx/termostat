@@ -71,6 +71,7 @@ include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F1xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
 include framework_cpp/framework.mk
+DELAY_CLASS = delay
 include delay/del.mk
 include st7735/st7735.mk
 include rfm12b/rfm.mk
@@ -143,7 +144,7 @@ INCDIR += $(PORTINC) $(KERNINC) $(TESTINC) \
 # Compiler settings
 #
 
-MCU  = cortex-m4
+MCU  = cortex-m3
 
 #TRGT = arm-elf-
 TRGT = arm-none-eabi-

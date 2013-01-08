@@ -7,6 +7,8 @@
 #include "rfmIncludeCpp.h"
 #include "Wireless.h"
 
+int main (void )  __attribute__((noreturn));
+
 void* operator new(size_t sz)
 {
 	return chCoreAlloc(sz);
@@ -21,9 +23,9 @@ GUI::Gui * ui;
 
 int main(void)
 {
-	chibios_rt::System::Init();
 	halInit();
-	delay_process virtual_timer;
+	chibios_rt::System::Init();
+
 	ui = new GUI::Gui;
 	new Wireless;
 	chThdSetPriority(NORMALPRIO -1 );
@@ -34,11 +36,9 @@ int main(void)
 
 	while (TRUE)
 	{
-		virtual_timer.Play();
+		delay_process::Play();
 		chThdSleepMilliseconds(1);
 	}
-
-	return 1;
 }
 
 

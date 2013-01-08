@@ -47,6 +47,28 @@ uint32_t port::input_buttons(void)
 void port::init()
 {
 	St7735::Init();
+
+	CLR_RES;
+	CLR_RS;
+	CLR_SDA;
+	CLR_SCL;
+	CLR_CS;
+
+	SET_RES;
+	CLR_RES;
+
+	SET_RS;
+	CLR_RS;
+
+	SET_SDA;
+	CLR_SDA;
+
+	SET_SCL;
+	CLR_SCL;
+
+	SET_CS;
+	CLR_CS;
+
 	while(1)
 	{
 		asm ("nop");
@@ -60,15 +82,6 @@ void port::init()
 	palSetPadMode(GPIOB, 2, PAL_MODE_INPUT_PULLDOWN);
 	palSetPadMode(GPIOB, 0, PAL_MODE_OUTPUT_PUSHPULL);
 	palSetPad(GPIOB, 0);
-}
-
-
-
-///musí to tady být pokud se nepoužíva c++ linker
-extern "C" void __cxa_pure_virtual()
-{
-	while (1)
-		;
 }
 
 }

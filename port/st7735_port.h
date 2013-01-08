@@ -24,25 +24,16 @@ extern "C"
 #include "ch.h"
 #include "hal.h"
 
-//připadně mrsknout typedef 8, 16 pokud nejsou někde defaultně
-#ifdef ST7735_default_typedefs
-typedef unsigned char uint8_t;
-typedef unsigned int uint16_t;
-#endif
-
-#define bit_set(x,y)  (x->BSRR = 1<<y)
-#define bit_clr(x,y)  (x->BRR = 1<<y)
-
-#define CLR_RS     	bit_clr(GPIOA,1)
-#define SET_RS     	bit_set(GPIOA,1)
-#define CLR_SDA    	bit_clr(GPIOA,2)
-#define SET_SDA    	bit_set(GPIOA,2)
-#define CLR_SCL    	bit_clr(GPIOA,3)
-#define SET_SCL    	bit_set(GPIOA,3)
-#define CLR_CS     	bit_clr(GPIOA,4)
-#define SET_CS     	bit_set(GPIOA,4)
-#define CLR_RES		bit_clr(GPIOA,0)
-#define SET_RES		bit_set(GPIOA,0)
+#define CLR_RES		palClearPad(GPIOA,8)
+#define SET_RES		palSetPad(GPIOA,8)
+#define CLR_RS     	palClearPad(GPIOA,9)
+#define SET_RS     	palSetPad(GPIOA,9)
+#define CLR_SDA    	palClearPad(GPIOA,10)
+#define SET_SDA    	palSetPad(GPIOA,10)
+#define CLR_SCL    	palClearPad(GPIOA,11)
+#define SET_SCL    	palSetPad(GPIOA,11)
+#define CLR_CS     	palClearPad(GPIOA,12)
+#define SET_CS     	palSetPad(GPIOA,12)
 
 //backlight
 #define CLR_BL

@@ -28,19 +28,19 @@
 /*
  * Board identifier.
  */
-#define BOARD_ST_STM32VL_DISCOVERY
+//#define BOARD_ST_STM32VL_DISCOVERY
 #define BOARD_NAME              "ST STM32VL-Discovery"
 
 /*
  * Board frequencies.
  */
 #define STM32_LSECLK            32768
-#define STM32_HSECLK            8000000
+#define STM32_HSECLK            4000000
 
 /*
  * MCU type, supported types are defined in ./os/hal/platforms/hal_lld.h.
  */
-#define STM32F10X_MD_VL
+#define STM32F10X_MD
 
 /*
  * IO pins assignments.
