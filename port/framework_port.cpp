@@ -10,6 +10,7 @@
 #include "hal.h"
 #include "framework_port.h"
 #include "st7735.hpp"
+#include "stm32f10x_flash.h"
 
 namespace GuiFramework
 {
@@ -34,11 +35,11 @@ namespace GuiFramework
  */
 uint32_t port::input_buttons(void)
 {
-	if (palReadPad(GPIOB,2))
+	if (palReadPad(GPIOB,4))
 		return 2;
-	else if (palReadPad(GPIOD,0))
+	else if (palReadPad(GPIOB,3))
 		return 0;
-	else if (palReadPad(GPIOD,4))
+	else if (palReadPad(GPIOB,5))
 		return 1;
 	else
 		return -1;
@@ -47,41 +48,50 @@ uint32_t port::input_buttons(void)
 void port::init()
 {
 	St7735::Init();
+	AFIO->MAPR |= 0b010 << 24;
+	palSetPadMode(GPIOB, 3, PAL_MODE_INPUT_PULLDOWN);
+	palSetPadMode(GPIOB, 4, PAL_MODE_INPUT_PULLDOWN);
+	palSetPadMode(GPIOB, 5, PAL_MODE_INPUT_PULLDOWN);
+}
 
-	CLR_RES;
-	CLR_RS;
-	CLR_SDA;
-	CLR_SCL;
-	CLR_CS;
+uint32_t port::address = 0;
 
-	SET_RES;
-	CLR_RES;
-
-	SET_RS;
-	CLR_RS;
-
-	SET_SDA;
-	CLR_SDA;
-
-	SET_SCL;
-	CLR_SCL;
-
-	SET_CS;
-	CLR_CS;
-
-	while(1)
+void port::Erase(uint32_t start, uint32_t stop)
+{
+	address = start;
+	FLASH_Unlock();
+	while(start < stop)
 	{
-		asm ("nop");
+		if (FLASH_ErasePage(start) != FLASH_COMPLETE)
+		{
+			asm("bkpt");
+		}
+		start += 1024;
 	}
-	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_PULLDOWN);
-	palSetPadMode(GPIOD, 0, PAL_MODE_INPUT_PULLDOWN);
-	palSetPadMode(GPIOD, 4, PAL_MODE_INPUT_PULLDOWN);
-	palSetPadMode(GPIOD, 2, PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPad(GPIOD, 2);
 
-	palSetPadMode(GPIOB, 2, PAL_MODE_INPUT_PULLDOWN);
-	palSetPadMode(GPIOB, 0, PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPad(GPIOB, 0);
+	FLASH_Lock();
+}
+
+void * port::Write(const void * datas, uint32_t size)
+{
+	FLASH_Unlock();
+	uint16_t * data = (uint16_t *)datas;
+	void * temp = (void *)address;
+
+	size = (size + 1) / 2;
+
+	for (uint32_t i = 0 ; i < size ; i++)
+	{
+		if (FLASH_ProgramHalfWord(address,*data) != FLASH_COMPLETE)
+		{
+			asm("bkpt");
+		}
+		data++;
+		address += 2;
+	}
+
+	return temp;
+	FLASH_Lock();
 }
 
 }

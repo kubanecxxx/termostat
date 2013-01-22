@@ -37,6 +37,8 @@ class port
 public:
 	static uint32_t input_buttons(void);
 	static void init(void);
+	static void Erase(uint32_t start, uint32_t stop);
+	static void * Write(const void * datas, uint32_t size);
 
 	static inline void FillRGB(uint16_t color)
 	{
@@ -61,6 +63,9 @@ public:
 	{
 		St7735::DrawRectangle(x1, y1, x2, y2, color);
 	}
+
+private:
+	static uint32_t address;
 };
 }
 /**

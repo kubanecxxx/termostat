@@ -29,7 +29,7 @@
  * Board identifier.
  */
 //#define BOARD_ST_STM32VL_DISCOVERY
-#define BOARD_NAME              "ST STM32VL-Discovery"
+#define BOARD_NAME              "ST TermostatBoard"
 
 /*
  * Board frequencies.

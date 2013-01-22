@@ -25,20 +25,30 @@ int main(void)
 {
 	halInit();
 	chibios_rt::System::Init();
+/*
+	palSetPadMode(GPIOB,6,PAL_MODE_OUTPUT_PUSHPULL);
+	while(TRUE)
+	{
+		chThdSleepMilliseconds(500);
+		palTogglePad(GPIOB,6);
+	}
 
+*/
 	ui = new GUI::Gui;
+/*
 	new Wireless;
 	chThdSetPriority(NORMALPRIO -1 );
 	delay_class refresh_logic(Logic::logika_refresh, ui, 3000);
 
 	//leds
 	palSetGroupMode(GPIOD, 0b1111, 12, PAL_MODE_OUTPUT_PUSHPULL);
-
+*/
 	while (TRUE)
 	{
 		delay_process::Play();
 		chThdSleepMilliseconds(1);
 	}
 }
+
 
 

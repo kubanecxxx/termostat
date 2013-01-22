@@ -15,7 +15,7 @@ Gui::Gui()
 {
 	port::init();
 
-	gui_FlashWrite::Erase(gui_FlashWrite::SEC_8, gui_FlashWrite::SEC_9);
+	port::Erase(100*1024,120*1024 - 1);
 
 	ScreenMain = new MainScreenClass;
 	ScreenMenu = new MenuScreenClass;

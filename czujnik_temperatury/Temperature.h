@@ -8,7 +8,7 @@
 #ifndef TEMPERATURE_H_
 #define TEMPERATURE_H_
 
-#define I2C_TEMP_ADDRESS 0b1001111
+#define I2C_TEMP_ADDRESS 0b1001000
 
 class Temperature
 {
