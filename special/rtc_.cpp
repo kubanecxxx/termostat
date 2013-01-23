@@ -8,58 +8,48 @@
 #include "guiInclude.h"
 #include "ch.h"
 #include "hal.h"
-
-/**
- * @todo teď to utiká o minutu za hodinu, bud zkalibrovat nebo předělat na externi LS šutr
- * @todo dodělat vteřinovej wake-up
- */
-
-#define GetNeco(time, u_off) \
-	(((time >> u_off )& 0xF) + (((time >> (u_off + 4)) & 0xF) * 10))
-
-#define SetNeco(time,off,val) \
-	time &= ~(0xF << off); \
-	time |= val << off
-#define Num2BcdU(num) (num % 10)
-#define Num2BcdT(num) (num / 10)
-#define Num2Bcd(num) (Num2BcdU(num) | (Num2BcdT(num) << 4))
-
-#define SetNecoLip(time,u_off,val) \
-	SetNeco (time, u_off, Num2BcdU(val)); \
-	SetNeco (time, (u_off + 4), Num2BcdT(val))
-
-#define GetSeconds(time) GetNeco(time,RTC_TR_SU_OFFSET)
-#define GetMinutes(time) GetNeco(time,RTC_TR_MNU_OFFSET)
-#define GetHours(time)  \
-	(((time >> RTC_TR_HU_OFFSET )& 0xF) + (((time >> (RTC_TR_HT_OFFSET)) & 0x3) * 10))
-#define GetDay(day) ((day >> RTC_DR_WDU_OFFSET )& 0x7)
-
-#define SetSeconds(time,val) SetNecoLip(time,RTC_TR_SU_OFFSET,val)
-#define SetMinutes(time,val) SetNecoLip(time,RTC_TR_MNU_OFFSET,val)
-#define SetHours(time,val)	\
-	SetNeco(time, RTC_TR_HU_OFFSET,Num2BcdU(val)); \
-	time &= ~(0x7 << RTC_TR_HT_OFFSET); \
-	time |= Num2BcdT(val) << RTC_TR_HT_OFFSET
-#define SetDay(time,val) \
-	time &= ~(0x7 << RTC_DR_WDU_OFFSET); \
-	time |= (Num2BcdU(val) << RTC_DR_WDU_OFFSET)
+#include <time.h>
 
 using namespace GuiFramework;
 
 GUI::Gui * rtcClass::ui;
 
+static void localtime(uint32_t time, struct tm & t)
+{
+	t.tm_sec = time % 60;
+	time /= 60;
+	t.tm_min = time % 60;
+	time /= 60;
+	t.tm_hour = time % 24;
+	time /= 24;
+	time *= 100;
+	uint32_t temp = (time % 36525) / 100; //pocet dni od zacatku roku
+	t.tm_wday = (temp) % 7;
+}
+
+static uint32_t maketime(const struct tm & t)
+{
+	uint32_t temp;
+	temp = t.tm_sec;
+	temp += t.tm_min * 60;
+	temp += t.tm_hour * 3600;
+	temp += t.tm_wday * 24 * 3600;
+
+	return temp;
+}
+
 void rtcClass::Init(void)
 {
-	rtcInit();
-
 	RTCTime time;
-#if 0
-	SetMinutes(time.tv_time, 58);
-	SetHours(time.tv_time, 23);
-	SetDay(time.tv_date, 6);
-	time.h12 = FALSE;
-	time.tv_time &= ~ (1 << 22);
-#endif
+	struct tm t;
+
+	rtcInit();
+	t.tm_hour = 18;
+	t.tm_min = 27;
+	t.tm_wday = 2;
+	t.tm_sec = 0;
+	time.tv_sec = maketime(t);
+
 	rtcSetTime(&RTCD1, &time);
 }
 
@@ -72,42 +62,34 @@ void rtcClass::TimeShow(void * data)
 	RTCTime time;
 
 	rtcGetTime(&RTCD1, &time);
-#if 0
-	ui->ScreenMain->Minuty->SetValue(GetMinutes(time.tv_time));
+	struct tm t;
+	localtime(time.tv_sec, t);
+
+	ui->ScreenMain->Minuty->SetValue(t.tm_min);
 	ui->ScreenMain->Minuty->print();
 
-	ui->ScreenMain->Hodiny->SetValue(GetHours(time.tv_time));
+	ui->ScreenMain->Hodiny->SetValue(t.tm_hour);
 	ui->ScreenMain->Hodiny->print();
 
-	ui->ScreenMain->Den->SetValue(GetDay(time.tv_date));
+	ui->ScreenMain->Den->SetValue(t.tm_wday + 1);
 	ui->ScreenMain->Den->print();
-	#endif
+
 }
 
-void rtcClass::zlepsovak(gui_Item & item)
+void rtcClass::zlepsovak()
 {
-	int16_t temp = item.GetHighLimit();
-	int16_t be = item.GetValue();
-
 	RTCTime time;
-	rtcGetTime(&RTCD1, &time);
-#if 0
-	switch (temp)
-	{
-	case 7:
-		SetDay(time.tv_date, be);
-		break;
-	case 59:
-		SetMinutes(time.tv_time, be);
-		break;
-	case 23:
-		SetHours(time.tv_time, be);
-		break;
-	}
+	struct tm t;
 
-	time.h12 = FALSE;
+	rtcGetTime(&RTCD1, &time);
+	t.tm_hour = ui->ScreenMain->Hodiny->GetValue();
+	t.tm_min = ui->ScreenMain->Minuty->GetValue();
+	t.tm_wday = ui->ScreenMain->Den->GetValue() - 1;
+	t.tm_sec = 0;
+
+	time.tv_sec = maketime(t);
 	rtcSetTime(&RTCD1, &time);
-	#endif
+
 }
 
 void rtcClass::CallbackUp(void * data)
@@ -115,7 +97,7 @@ void rtcClass::CallbackUp(void * data)
 	gui_Item & item = *(gui_Item *) data;
 
 	++item;
-	zlepsovak(item);
+	zlepsovak();
 }
 
 void rtcClass::CallbackDown(void * data)
@@ -123,6 +105,6 @@ void rtcClass::CallbackDown(void * data)
 	gui_Item & item = *(gui_Item *) data;
 
 	--item;
-	zlepsovak(item);
+	zlepsovak();
 }
 

@@ -18,7 +18,7 @@ public:
 	static void CallbackUp(void * item);
 
 private:
-	static void zlepsovak(GuiFramework::gui_Item & item);
+	static void zlepsovak();
 	static void TimeRegulate(void);
 	static GUI::Gui * ui;
 };

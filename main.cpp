@@ -35,14 +35,14 @@ int main(void)
 
 */
 	ui = new GUI::Gui;
-/*
-	new Wireless;
+
+	//new Wireless;
 	chThdSetPriority(NORMALPRIO -1 );
 	delay_class refresh_logic(Logic::logika_refresh, ui, 3000);
 
 	//leds
 	palSetGroupMode(GPIOD, 0b1111, 12, PAL_MODE_OUTPUT_PUSHPULL);
-*/
+
 	while (TRUE)
 	{
 		delay_process::Play();
