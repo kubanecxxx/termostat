@@ -14,11 +14,24 @@ using namespace GuiFramework;
 
 gui_Screen * VodaScreenClass::screen;
 
+#define SIZE 8
+#define SIZEY 12
+#define X1 10
+#define X2 (X1+10*SIZE)
+#define Y1 45
+#define Y2 (Y1 + SIZEY)
+
 VodaScreenClass::VodaScreenClass()
 {
 	screen = new gui_Screen;
-	gui_Item pole[7];
-	gui_Item * koule[7];
+
+	CreateHalf();
+	CreateRest();
+}
+
+void VodaScreenClass::CreateHalf()
+{
+	gui_Item pole[3];
 
 	pole[0].SetText("Hlidat t. ");
 	pole[0].SetValue(0);
@@ -35,12 +48,7 @@ VodaScreenClass::VodaScreenClass()
 	pole[1].SetPrimaryX(10);
 	pole[1].SetPrimaryY(26);
 	pole[1].SetConvFunction(conv_hours_minutes);
-#define SIZE 8
-#define SIZEY 12
-#define X1 10
-#define X2 (X1+10*SIZE)
-#define Y1 45
-#define Y2 (Y1 + SIZEY)
+
 	pole[2].SetText("Zacit   ");
 	pole[2].SetLowLimit(0);
 	pole[2].SetHighLimit(23);
@@ -49,47 +57,51 @@ VodaScreenClass::VodaScreenClass()
 	pole[2].SetPrimaryX(X1);
 	pole[2].SetPrimaryY(Y1);
 
-	pole[3].SetText(":");
-	pole[3].SetValue(0);
-	pole[3].SetHighLimit(59);
-	pole[3].SetLowLimit(0);
-	pole[3].SetConvFunction(conv_hours_minutes);
-	pole[3].SetPrimaryX(X2);
-	pole[3].SetPrimaryY(Y1);
+	Teplota = screen->Register(&pole[0],true);
+	HlidatTeplotu = screen->Register(&pole[1],true);
+	HodinyZacit = screen->Register(&pole[2],true);
+}
 
-	pole[4].SetText("Vypnout ");
-	pole[4].SetLowLimit(0);
-	pole[4].SetHighLimit(23);
-	pole[4].SetValue(10);
-	pole[4].SetConvFunction(conv_hours_minutes);
-	pole[4].SetPrimaryX(X1);
-	pole[4].SetPrimaryY(Y2);
+void VodaScreenClass::CreateRest()
+{
+	gui_Item pole[4];
 
-	pole[5].SetText(":");
-	pole[5].SetValue(0);
-	pole[5].SetHighLimit(59);
-	pole[5].SetLowLimit(0);
-	pole[5].SetConvFunction(conv_hours_minutes);
-	pole[5].SetPrimaryX(X2);
-	pole[5].SetPrimaryY(Y2);
+	pole[0].SetText(":");
+	pole[0].SetValue(0);
+	pole[0].SetHighLimit(59);
+	pole[0].SetLowLimit(0);
+	pole[0].SetConvFunction(conv_hours_minutes);
+	pole[0].SetPrimaryX(X2);
+	pole[0].SetPrimaryY(Y1);
 
-	pole[6].SetText("Zpet");
-	pole[6].SetPrimaryX(50);
-	pole[6].SetPrimaryY(140);
-	pole[6].SetShownValue(false);
-	pole[6].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
+	pole[1].SetText("Vypnout ");
+	pole[1].SetLowLimit(0);
+	pole[1].SetHighLimit(23);
+	pole[1].SetValue(10);
+	pole[1].SetConvFunction(conv_hours_minutes);
+	pole[1].SetPrimaryX(X1);
+	pole[1].SetPrimaryY(Y2);
+
+	pole[2].SetText(":");
+	pole[2].SetValue(0);
+	pole[2].SetHighLimit(59);
+	pole[2].SetLowLimit(0);
+	pole[2].SetConvFunction(conv_hours_minutes);
+	pole[2].SetPrimaryX(X2);
+	pole[2].SetPrimaryY(Y2);
+
+	pole[3].SetText("Zpet");
+	pole[3].SetPrimaryX(50);
+	pole[3].SetPrimaryY(140);
+	pole[3].SetShownValue(false);
+	pole[3].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
 			MenuScreenClass::MakeActiveCB);
-	pole[6].SetConvFunction(conv_dummy);
+	pole[3].SetConvFunction(conv_dummy);
 
-	for (int i = 0 ; i < 7 ; i++)
-		koule[i] = screen->Register(&pole[i],true);
-
-	Teplota = koule[1];
-	HlidatTeplotu = koule[0];
-	HodinyZacit = koule[2];
-	MinutyZacit = koule[3];
-	HodinyKonec = koule[4];
-	MinutyKonec = koule[5];
+	MinutyZacit = screen->Register(&pole[0],true);
+	HodinyKonec = screen->Register(&pole[1],true);
+	MinutyKonec = screen->Register(&pole[2],true);
+	screen->Register(&pole[3],true);
 }
 
 void VodaScreenClass::MakeActiveCB(void * item)

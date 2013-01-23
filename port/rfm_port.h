@@ -27,7 +27,7 @@ extern "C"
  * žlutá máme synchronizaci
  * a modrá když se posilá paket s datama (ne idle)
  */
-#define RFM_INDICATE_ON
+//#define RFM_INDICATE_ON
 
 void low_level_spi_init(void);
 uint8_t low_level_wait_ffit_high(systime_t timeout)  __attribute__ ((optimize (0)));

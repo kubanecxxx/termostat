@@ -11,6 +11,7 @@
 #include "framework_port.h"
 #include "st7735.hpp"
 #include "stm32f10x_flash.h"
+#include "PwmBacklight.h"
 
 namespace GuiFramework
 {
@@ -35,14 +36,18 @@ namespace GuiFramework
  */
 uint32_t port::input_buttons(void)
 {
+	uint32_t temp = -1;
 	if (palReadPad(GPIOB,4))
-		return 2;
+		temp = 2;
 	else if (palReadPad(GPIOB,3))
-		return 0;
+		temp = 0;
 	else if (palReadPad(GPIOB,5))
-		return 1;
-	else
-		return -1;
+		temp = 1;
+
+	if (temp != 0xFFFFFFFF)
+		PwmBacklight::FadeIn();
+
+	return temp;
 }
 
 void port::init()

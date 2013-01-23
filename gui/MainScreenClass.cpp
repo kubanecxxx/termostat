@@ -26,29 +26,30 @@ void MainScreenClass::MakeActiveCB(void * item)
 	screen->printScreen();
 }
 
+const uint16_t SKOLOR = 0x07E0;
+
 /**
  * vytvořit screen
  * najebat do něho všecko
- *
  */
 MainScreenClass::MainScreenClass()
 {
-	const uint16_t SKOLOR = 0x07E0;
 	screen = new gui_Screen;
+	CreateHours();
+	CreateTemps();
+	CreateRest();
 
-	gui_Item cha[10];
+	Temperature::Init();
 
+	new delay_class(RefreshTemp, this, 5000);
+}
+
+void MainScreenClass::CreateHours(void)
+{
+	gui_Item cha[3];
 	Hodiny = &cha[0];
 	Minuty = &cha[1];
 	Den = &cha[2];
-	Program = &cha[3];
-	TeplotaManual = &cha[4];
-	TeplotaChtena = &cha[5];
-	Menu = &cha[6];
-	Topi = &cha[7];
-
-	TeplotaDole = &cha[8];
-	TeplotaDoma = &cha[9];
 
 	Hodiny->SetText("");
 	Hodiny->SetHighLimit(23);
@@ -95,6 +96,15 @@ MainScreenClass::MainScreenClass()
 	Den->SetCallback(gui_Item::BUTTON_UP, gui_Item::CLICKED,
 			rtcClass::CallbackUp);
 	Den = screen->Register(Den, true);
+}
+
+void MainScreenClass::CreateTemps(void)
+{
+	gui_Item cha[4];
+	Program = &cha[0];
+	TeplotaManual = &cha[1];
+	TeplotaChtena = &cha[2];
+	Menu = &cha[3];
 
 	Program->SetLowLimit(0);
 	Program->SetHighLimit(3);
@@ -137,6 +147,15 @@ MainScreenClass::MainScreenClass()
 			MenuScreenClass::MakeActiveCB);
 	Menu->SetConvFunction(conv_dummy);
 	Menu = screen->Register(Menu, true);
+}
+
+void MainScreenClass::CreateRest(void)
+{
+	gui_Item cha[3];
+
+	Topi = &cha[0];
+	TeplotaDole = &cha[1];
+	TeplotaDoma = &cha[2];
 
 	Topi->SetPrimaryX(60);
 	Topi->SetPrimaryY(140);
@@ -191,10 +210,6 @@ MainScreenClass::MainScreenClass()
 	be[2].SetFontSize(16);
 
 	screen->Register(&be[2], true);
-
-	Temperature::Init();
-
-	new delay_class(RefreshTemp, this, 5000);
 }
 
 void MainScreenClass::RefreshTemp(void * data)

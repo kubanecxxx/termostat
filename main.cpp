@@ -7,11 +7,14 @@
 #include "rfmIncludeCpp.h"
 #include "Wireless.h"
 
-int main (void )  __attribute__((noreturn));
-
 void* operator new(size_t sz)
 {
-	return chCoreAlloc(sz);
+	void * temp;
+	temp = chCoreAlloc(sz);
+	if (temp == NULL)
+		asm ("bkpt");
+
+	return temp;
 }
 
 void operator delete(void* m)
@@ -20,28 +23,25 @@ void operator delete(void* m)
 }
 
 GUI::Gui * ui;
+delay_class * refresh_logic;
 
 int main(void)
 {
 	halInit();
 	chibios_rt::System::Init();
-/*
-	palSetPadMode(GPIOB,6,PAL_MODE_OUTPUT_PUSHPULL);
-	while(TRUE)
-	{
-		chThdSleepMilliseconds(500);
-		palTogglePad(GPIOB,6);
-	}
-
-*/
+	chRegSetThreadName("Main");
+	/*
+	 palSetPadMode(GPIOB,6,PAL_MODE_OUTPUT_PUSHPULL);
+	 while(TRUE)
+	 {
+	 chThdSleepMilliseconds(500);
+	 palTogglePad(GPIOB,6);
+	 }
+	 */
 	ui = new GUI::Gui;
-
-	//new Wireless;
-	chThdSetPriority(NORMALPRIO -1 );
-	delay_class refresh_logic(Logic::logika_refresh, ui, 3000);
-
-	//leds
-	palSetGroupMode(GPIOD, 0b1111, 12, PAL_MODE_OUTPUT_PUSHPULL);
+	new Wireless;
+	chThdSetPriority(NORMALPRIO - 1);
+	refresh_logic = new delay_class(Logic::logika_refresh, ui, 3000);
 
 	while (TRUE)
 	{
@@ -49,6 +49,4 @@ int main(void)
 		chThdSleepMilliseconds(1);
 	}
 }
-
-
 

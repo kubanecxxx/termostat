@@ -29,6 +29,9 @@ private:
 	static void conv_onoff(char * data, int16_t value);
 	static GuiFramework::gui_Screen * screen;
 
+	void CreateHalf();
+	void CreateRest();
+
 };
 
 }

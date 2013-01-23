@@ -21,13 +21,13 @@
 /*
  * ST32F100xB memory setup.
  */
-__main_stack_size__     = 0x0C00;
-__process_stack_size__  = 0x0600;
+__main_stack_size__     = 0x0800;
+__process_stack_size__  = 0x0400;
 
 MEMORY
 {
     flash : org = 0x08000000, len = 99k
-    ram : org = 0x20000000, len = 10k
+    ram : org = 0x20000000, len = 8k
 }
 
 __ram_start__           = ORIGIN(ram);

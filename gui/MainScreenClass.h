@@ -37,6 +37,10 @@ private:
 	static void conv_program(char* data, int16_t value);
 	static void conv_topit(char * data, int16_t value);
 	static void RefreshTemp(void * data);
+
+	void CreateHours(void);
+	void CreateTemps(void);
+	void CreateRest(void);
 };
 }
 

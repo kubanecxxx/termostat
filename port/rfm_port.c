@@ -18,34 +18,15 @@ typedef enum
 	SCK = 0, MISO, MOSI, NSS, FFIT, NIRQ, LAST
 } chatra;
 
-#ifndef RFM_DISCO
-#ifndef RFM_SENELA
-#error neni definovan kit
-#endif
-#endif
-
 static const gpio_t gpio[LAST] =
 {
-#ifdef RFM_DISCO
-		//pinout na diškovery
-		{	GPIOB, 3},
-		{	GPIOB, 4},
-		{	GPIOB, 5},
-		{	GPIOB, 6},
-		{	GPIOD, 5},
-		{	GPIOD, 6}
-#endif
-
-#ifdef RFM_SENELA
-		//pinout na kitu senela
-		{	GPIOE, 1},
-		{	GPIOE, 3},
-		{	GPIOE, 2},
-		{	GPIOE, 0},
-		{	GPIOE, 5},
-		{	GPIOE, 4}
-#endif
-	};
+{ GPIOB, 13 },
+{ GPIOB, 14 },
+{ GPIOB, 15 },
+{ GPIOB, 12 },
+{ GPIOA, 3 },
+{ GPIOA, 2 }
+};
 
 #define SPI_PIN_LOW(x) (gpio[x].gpio->BRR |= 1<<gpio[x].pin)
 #define SPI_PIN_HIGH(x) (gpio[x].gpio->BSRR  |= 1<<gpio[x].pin)

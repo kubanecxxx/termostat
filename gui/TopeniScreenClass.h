@@ -23,6 +23,8 @@ public:
 
 private:
 	void SwitchToTopeniVikend(void * data);
+	void CreateRow(int row, GuiFramework::gui_Screen * scr);
+	void CreateRest(bool weekend, GuiFramework::gui_Screen * scr);
 
 	static GuiFramework::gui_Screen * screenPoPa;
 	static GuiFramework::gui_Screen * screenSoNe;
