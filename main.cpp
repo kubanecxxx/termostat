@@ -30,16 +30,14 @@ int main(void)
 	halInit();
 	chibios_rt::System::Init();
 	chRegSetThreadName("Main");
-	/*
-	 palSetPadMode(GPIOB,6,PAL_MODE_OUTPUT_PUSHPULL);
-	 while(TRUE)
-	 {
-	 chThdSleepMilliseconds(500);
-	 palTogglePad(GPIOB,6);
-	 }
-	 */
+
+	rccDisableAPB2(0b111 < 4, 1);
 	ui = new GUI::Gui;
 	new Wireless;
+
+	rf_init();
+	rf_sleep();
+
 	chThdSetPriority(NORMALPRIO - 1);
 	refresh_logic = new delay_class(Logic::logika_refresh, ui, 3000);
 

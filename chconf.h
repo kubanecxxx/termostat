@@ -499,6 +499,7 @@
 #if !defined(IDLE_LOOP_HOOK) || defined(__DOXYGEN__)
 #define IDLE_LOOP_HOOK() {                                                  \
   /* Idle loop code here.*/                                                 \
+  asm("wfi"); \
 }
 #endif
 

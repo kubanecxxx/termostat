@@ -54,6 +54,6 @@ void PwmBacklight::FadeIn()
 
 void PwmBacklight::FadeOut()
 {
-	BFinish = 2;
+	BFinish = 5;
 	BDirection = B_DOWN;
 }

@@ -16,7 +16,7 @@ Gui::Gui()
 	PwmBacklight::Init();
 	port::init();
 
-	port::Erase(100*1024,120*1024 - 1);
+	port::Erase(100 * 1024, 120 * 1024 - 1);
 
 	ScreenMain = new MainScreenClass;
 	ScreenMenu = new MenuScreenClass;
@@ -26,12 +26,10 @@ Gui::Gui()
 
 	gui_Screen::printActiveScreen();
 
-
 	rtcClass::Init();
 	new delay_class(scan, this, 150);
 	new delay_class(rtcClass::TimeShow, this, 20000);
 	del_returnMain = new delay_class(ReturnMain, this, 10000);
-
 
 	rtcClass::TimeShow(this);
 }

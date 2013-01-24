@@ -108,7 +108,7 @@ void MainScreenClass::CreateTemps(void)
 
 	Program->SetLowLimit(0);
 	Program->SetHighLimit(3);
-	Program->SetValue(0);
+	Program->SetValue(3);
 	Program->SetPrimaryX(10);
 	Program->SetPrimaryY(25);
 	Program->SetConvFunction(conv_program);
@@ -124,7 +124,7 @@ void MainScreenClass::CreateTemps(void)
 	TeplotaManual->SetHighLimit(35);
 	TeplotaManual->SetFontSize(16);
 	TeplotaManual->SetShownGlobal(false);
-	TeplotaManual->SetValue(25);
+	TeplotaManual->SetValue(28);
 	TeplotaManual->SetConvFunction(conv_hours_minutes);
 	TeplotaManual = screen->Register(TeplotaManual, true);
 
