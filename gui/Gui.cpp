@@ -6,7 +6,6 @@
  */
 
 #include "guiInclude.h"
-#include "PwmBacklight.h"
 
 namespace GUI
 {
@@ -14,6 +13,7 @@ using namespace GuiFramework;
 
 Gui::Gui()
 {
+	PwmBacklight::Init();
 	port::init();
 
 	port::Erase(100*1024,120*1024 - 1);
@@ -25,7 +25,7 @@ Gui::Gui()
 	ScreenVoda = new VodaScreenClass;
 
 	gui_Screen::printActiveScreen();
-	PwmBacklight::Init();
+
 
 	rtcClass::Init();
 	new delay_class(scan, this, 150);
@@ -48,10 +48,10 @@ void Gui::scan(void * data)
 void Gui::ReturnMain(void * data)
 {
 	Gui * ui = (Gui*) data;
+	PwmBacklight::FadeOut();
 	if (!ui->ScreenMain->IsActive())
 	{
 		ui->ScreenMain->MakeActiveCB();
 	}
-	PwmBacklight::FadeOut();
 }
 }

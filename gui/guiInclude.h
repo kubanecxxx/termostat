@@ -13,6 +13,9 @@
  * user has to include ONLY this file
  */
 
+#include "ch.h"
+#include "hal.h"
+#include "PwmBacklight.h"
 #include "ch.hpp"
 #include "delayclass.h"
 #include "guiCommon.h"
