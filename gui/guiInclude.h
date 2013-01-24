@@ -25,7 +25,10 @@
 #include "MenuScreenClass.h"
 #include "TopeniScreenClass.h"
 #include "VodaScreenClass.h"
+#include "Table.h"
 #include "Gui.h"
 #include "rtc_.h"
+
+extern GUI::Gui * ui;
 
 #endif /* GUIINCLUDE_H_ */

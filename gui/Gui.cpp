@@ -13,10 +13,13 @@ using namespace GuiFramework;
 
 Gui::Gui()
 {
+	ui = this;
 	PwmBacklight::Init();
 	port::init();
+	Tabulka = new Table(*Table::FlashBase);
+	//memset(Tabulka,0,sizeof(Table));
 
-	port::Erase(100 * 1024, 120 * 1024 - 1);
+	port::Erase(100 * 1024 + FLASH_BASE, FLASH_BASE + 120 * 1024 - 1);
 
 	ScreenMain = new MainScreenClass;
 	ScreenMenu = new MenuScreenClass;

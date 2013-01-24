@@ -19,11 +19,12 @@ gui_Screen * MenuScreenClass::screen;
 MenuScreenClass::MenuScreenClass()
 {
 	screen = new gui_Screen;
-	gui_Item pole[3];
+	gui_Item pole[4];
 
 	Voda = &pole[0];
 	Topeni = &pole[1];
 	Zpet = &pole[2];
+	gui_Item * save = &pole[3];
 
 	Voda->SetText("Ohrev vody");
 	Voda->SetPrimaryX(10);
@@ -43,6 +44,14 @@ MenuScreenClass::MenuScreenClass()
 			TopeniScreenClass::MakeActivePoPaCB);
 	Topeni = screen->Register(Topeni, true);
 
+	save->SetText("Ulozit");
+	save->SetPrimaryX(10);
+	save->SetPrimaryY(40);
+	save->SetShownValue(false);
+	save->SetConvFunction(conv_dummy);
+	save->SetCallback(gui_Item::BUTTON_ENTER,gui_Item::NOTCLICKED, SaveSetup);
+	save = screen->Register(save,true);
+
 	Zpet->SetText("Zpet");
 	Zpet->SetPrimaryX(50);
 	Zpet->SetPrimaryY(140);
@@ -51,6 +60,11 @@ MenuScreenClass::MenuScreenClass()
 	Zpet->SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
 			MainScreenClass::MakeActiveCB);
 	Zpet = screen->Register(Zpet, true);
+}
+
+void MenuScreenClass::SaveSetup(void *)
+{
+	ui->Tabulka->Save();
 }
 
 void MenuScreenClass::MakeActiveCB(void * item)

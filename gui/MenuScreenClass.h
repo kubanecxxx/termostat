@@ -25,6 +25,7 @@ private:
 
 	static GuiFramework::gui_Screen * screen;
 
+	static void SaveSetup(void * arg);
 };
 }
 #endif /* MENUSCREENCLASS_H_ */

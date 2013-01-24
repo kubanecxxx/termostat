@@ -24,6 +24,7 @@ public:
 	VodaScreenClass * ScreenVoda;
 
 	delay_class * del_returnMain;
+	Table * Tabulka;
 
 private:
 

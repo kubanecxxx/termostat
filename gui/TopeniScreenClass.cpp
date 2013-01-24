@@ -45,7 +45,7 @@ TopeniScreenClass::TopeniScreenClass(bool weekend)
 		Minuty[0]->GetSecondaryCoordinates()->SetY(97);
 	}
 
-	CreateRest(weekend,screen);
+	CreateRest(weekend, screen);
 }
 
 void TopeniScreenClass::CreateRest(bool weekend, gui_Screen * screen)
@@ -103,12 +103,26 @@ void TopeniScreenClass::CreateRow(int i, gui_Screen * screen)
 {
 	gui_Item items[3];
 
+	int16_t hodiny;
+	int16_t minuty;
+	int16_t teplota;
+	Table::time_temp_t * temp;
+
+	if (screen == screenPoPa)
+		temp = &ui->Tabulka->PoPa[i];
+	else
+		temp = &ui->Tabulka->SoNe[i];
+
+	hodiny = temp->time.hour;
+	minuty = temp->time.min;
+	teplota = temp->temperature;
+
 	//hodiny
 	items[0].SetPrimaryX(X1);
 	items[0].SetPrimaryY(Y1 + 2 * i * SIZEY);
 	items[0].SetLowLimit(0);
 	items[0].SetHighLimit(23);
-	items[0].SetValue(i);
+	items[0].SetValue(hodiny);
 	items[0].SetConvFunction(conv_hours_minutes);
 	items[0].AddSecondaryCoor(10, 10, screen);
 	items[0].SetText("");
@@ -122,7 +136,7 @@ void TopeniScreenClass::CreateRow(int i, gui_Screen * screen)
 	items[1].SetPrimaryY(Y1 + 2 * i * SIZEY);
 	items[1].SetLowLimit(0);
 	items[1].SetHighLimit(59);
-	items[1].SetValue(i * 5);
+	items[1].SetValue(minuty);
 	items[1].SetConvFunction(conv_hours_minutes);
 	items[1].AddSecondaryCoor(10, 10, screen);
 	items[1].SetText(":");
@@ -135,7 +149,7 @@ void TopeniScreenClass::CreateRow(int i, gui_Screen * screen)
 	items[2].SetPrimaryY(Y1 + (2 * i + 1) * SIZEY);
 	items[2].SetLowLimit(10);
 	items[2].SetHighLimit(35);
-	items[2].SetValue(3 * i);
+	items[2].SetValue(teplota);
 	items[2].SetConvFunction(conv_hours_minutes);
 	items[2].SetText("T:");
 	Teploty[i] = screen->Register(&items[2], true);
