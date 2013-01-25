@@ -53,5 +53,5 @@ void Temperature::RefreshTemperature()
 	txbuf[1] = 1;
 	i2cMasterTransmit(&I2CD2, I2C_TEMP_ADDRESS, txbuf, 2, NULL, 0);
 
-	temperature = rxbuf[0];
+	temperature = (rxbuf[0] << 8 | rxbuf[1]) - 128;
 }

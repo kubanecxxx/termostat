@@ -87,7 +87,7 @@ LDSCRIPT= STM32F101C8T6.ld
 CPPFILES = $(wildcard port/*.cpp) $(wildcard gui/*.cpp) 
 CPPFILES += $(wildcard special/*.cpp)  $(wildcard czujnik_temperatury/*.cpp)
 CPPFILES += $(wildcard wireless/*.cpp)
-CFILES = $(wildcard port/*.c) $(wildcard gui/*.c)
+CFILES = $(wildcard port/*.c) $(wildcard gui/*.c) $(wildcard special/*.c)
 
 INCDIR += gui special port czujnik_temperatury wireless
 

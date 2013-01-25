@@ -96,7 +96,7 @@ void rtcClass::CallbackUp(void * data)
 {
 	gui_Item & item = *(gui_Item *) data;
 
-	++item;
+	--item;
 	zlepsovak();
 }
 
@@ -104,7 +104,7 @@ void rtcClass::CallbackDown(void * data)
 {
 	gui_Item & item = *(gui_Item *) data;
 
-	--item;
+	++item;
 	zlepsovak();
 }
 

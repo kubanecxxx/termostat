@@ -8,6 +8,7 @@
 #include "guiInclude.h"
 #include "logika.h"
 #include "Wireless.h"
+#include "chsprintf.h"
 
 namespace GUI
 {
@@ -118,19 +119,20 @@ void MainScreenClass::CreateTemps(void)
 	Program = screen->Register(Program, true);
 
 	TeplotaManual->SetText("");
-	TeplotaManual->SetPrimaryX(80);
+	TeplotaManual->SetPrimaryX(40);
 	TeplotaManual->SetPrimaryY(50);
-	TeplotaManual->SetLowLimit(10);
-	TeplotaManual->SetHighLimit(35);
+	TeplotaManual->SetLowLimit(100);
+	TeplotaManual->SetHighLimit(350);
+	TeplotaManual->SetStep(5);
 	TeplotaManual->SetFontSize(16);
 	TeplotaManual->SetShownGlobal(false);
 	TeplotaManual->SetValue(ui->Tabulka->ManualTemp);
-	TeplotaManual->SetConvFunction(conv_hours_minutes);
+	TeplotaManual->SetConvFunction(conv_teplota);
 	TeplotaManual = screen->Register(TeplotaManual, true);
 
-	TeplotaChtena->SetConvFunction(conv_hours_minutes);
+	TeplotaChtena->SetConvFunction(conv_teplota);
 	TeplotaChtena->SetText("");
-	TeplotaChtena->SetPrimaryX(10);
+	TeplotaChtena->SetPrimaryX(40);
 	TeplotaChtena->SetPrimaryY(50);
 	TeplotaChtena->SetFontSize(16);
 	TeplotaChtena->SetChoseable(false);
@@ -167,22 +169,22 @@ void MainScreenClass::CreateRest(void)
 	Topi->SetUseDefaultTextColor(false);
 	Topi = screen->Register(Topi, true);
 
-	TeplotaDole->SetPrimaryX(50);
+	TeplotaDole->SetPrimaryX(40);
 	TeplotaDole->SetPrimaryY(110);
 	TeplotaDole->SetText("");
 	TeplotaDole->SetFontSize(16);
 	TeplotaDole->SetChoseable(false);
-	TeplotaDole->SetValue(40);
-	TeplotaDole->SetConvFunction(conv_hours_minutes);
+	TeplotaDole->SetValue(0);
+	TeplotaDole->SetConvFunction(conv_teplota);
 	TeplotaDole = screen->Register(TeplotaDole, true);
 
-	TeplotaDoma->SetPrimaryX(50);
+	TeplotaDoma->SetPrimaryX(40);
 	TeplotaDoma->SetPrimaryY(80);
 	TeplotaDoma->SetFontSize(16);
 	TeplotaDoma->SetChoseable(false);
 	TeplotaDoma->SetText("");
-	TeplotaDoma->SetValue(23);
-	TeplotaDoma->SetConvFunction(conv_hours_minutes);
+	TeplotaDoma->SetValue(0);
+	TeplotaDoma->SetConvFunction(conv_teplota);
 	TeplotaDoma = screen->Register(TeplotaDoma, true);
 
 	gui_Label be[4];
@@ -209,24 +211,30 @@ void MainScreenClass::CreateRest(void)
 	be[2].AddSecondaryCoor(82, 110, screen);
 	be[2].SetFontSize(16);
 
-	screen->Register(&be[2], true);
+//	screen->Register(&be[2], true);
 }
 
 void MainScreenClass::RefreshTemp(void * data)
 {
 	MainScreenClass * scren = (MainScreenClass*) data;
-	static int16_t prev;
+	static int16_t prev = 10;
 
 	Temperature::RefreshTemperature();
 	int16_t temp = Temperature::GetTemperature();
-	//if (prev != temp)
+	if (prev != temp)
 	{
-		scren->TeplotaDoma->SetValue(temp);
+		scren->TeplotaDoma->SetValue(temp / 128 * 10 / 2);
 		scren->TeplotaDoma->print();
 		prev = temp;
+	}
 
-		scren->TeplotaDole->SetValue(Wireless::GetTemperature());
+	static int16_t DolePrev;
+	temp = Wireless::GetTemperature();
+	if (DolePrev != temp)
+	{
+		scren->TeplotaDole->SetValue(temp / 128 * 10 / 2);
 		scren->TeplotaDole->print();
+		DolePrev = temp;
 	}
 }
 
@@ -267,6 +275,18 @@ void MainScreenClass::conv_program(char* data, int16_t value)
 		strcpy(data, "Manual ");
 	else
 		strcpy(data, "");
+}
+
+void MainScreenClass::conv_teplota(char * data, int16_t value)
+{
+	int16_t temp = value;
+	//temp = value / 128 * 10 / 2;
+
+	chsprintf(data, "%4d", temp);
+	int len = strlen(data);
+	data[len] = data[len - 1];
+	data[len - 1] = '.';
+	data[len + 1] = 0;
 }
 
 }

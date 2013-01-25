@@ -41,13 +41,14 @@ void VodaScreenClass::CreateHalf()
 	pole[0].SetPrimaryX(10);
 	pole[0].SetPrimaryY(10);
 
-	pole[1].SetText("Teplota    ");
+	pole[1].SetText("Teplota ");
 	pole[1].SetValue(ui->Tabulka->WaterTemperature);
-	pole[1].SetHighLimit(80);
-	pole[1].SetLowLimit(20);
+	pole[1].SetHighLimit(800);
+	pole[1].SetLowLimit(200);
 	pole[1].SetPrimaryX(10);
 	pole[1].SetPrimaryY(26);
-	pole[1].SetConvFunction(conv_hours_minutes);
+	pole[1].SetStep(5);
+	pole[1].SetConvFunction(MainScreenClass::conv_teplota);
 
 	pole[2].SetText("Zacit   ");
 	pole[2].SetLowLimit(0);

@@ -22,7 +22,7 @@ void Table::Save()
 
 	//main screen
 	Program = ui->ScreenMain->Program->GetValue();
-	ManualTemp = ui->ScreenMain->TeplotaChtena->GetValue();
+	ManualTemp = ui->ScreenMain->TeplotaManual->GetValue();
 
 	//voda screen
 	WaterWatchEnable = ui->ScreenVoda->HlidatTeplotu->GetValue();

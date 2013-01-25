@@ -31,11 +31,13 @@ public:
 	GuiFramework::gui_Item * TeplotaDoma;
 	GuiFramework::gui_Item * TeplotaDole;
 
+	static void conv_teplota(char * data, int16_t value);
 private:
 	static GuiFramework::gui_Screen * screen;
 	static void conv_days(char* data, int16_t value);
 	static void conv_program(char* data, int16_t value);
 	static void conv_topit(char * data, int16_t value);
+
 	static void RefreshTemp(void * data);
 
 	void CreateHours(void);

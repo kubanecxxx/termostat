@@ -97,7 +97,7 @@ void TopeniScreenClass::CreateRest(bool weekend, gui_Screen * screen)
 #define T2 (Y1 + 3*SIZEY)
 #define T3 (Y1 + 5*SIZEY)
 #define T4 (Y1 + 7*SIZEY)
-#define XT 50
+#define XT 40
 
 void TopeniScreenClass::CreateRow(int i, gui_Screen * screen)
 {
@@ -147,10 +147,11 @@ void TopeniScreenClass::CreateRow(int i, gui_Screen * screen)
 	//teploty
 	items[2].SetPrimaryX(XT);
 	items[2].SetPrimaryY(Y1 + (2 * i + 1) * SIZEY);
-	items[2].SetLowLimit(10);
-	items[2].SetHighLimit(35);
+	items[2].SetLowLimit(100);
+	items[2].SetHighLimit(350);
 	items[2].SetValue(teplota);
-	items[2].SetConvFunction(conv_hours_minutes);
+	items[2].SetStep(5);
+	items[2].SetConvFunction(MainScreenClass::conv_teplota);
 	items[2].SetText("T:");
 	Teploty[i] = screen->Register(&items[2], true);
 }

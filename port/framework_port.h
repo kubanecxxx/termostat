@@ -27,6 +27,8 @@ namespace GuiFramework
  */
 #define BUTTON_COUNT 3
 
+#define ITEM_VALUE_INVERSE
+
 /**
  * @brief portovací třída
  *

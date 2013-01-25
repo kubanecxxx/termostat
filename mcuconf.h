@@ -49,7 +49,7 @@
 #define STM32_PPRE2                         STM32_PPRE2_DIV8
 #define STM32_ADCPRE                        STM32_ADCPRE_DIV8
 #define STM32_MCOSEL                        STM32_MCOSEL_NOCLOCK
-#define STM32_RTCSEL                        STM32_RTCSEL_LSI
+#define STM32_RTCSEL                        STM32_RTCSEL_LSI //hsediv
 #define STM32_PVD_ENABLE                    FALSE
 #define STM32_PLS                           STM32_PLS_LEV0
 
