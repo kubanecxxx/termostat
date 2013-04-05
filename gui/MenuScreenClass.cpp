@@ -62,9 +62,16 @@ MenuScreenClass::MenuScreenClass()
 	Zpet = screen->Register(Zpet, true);
 }
 
-void MenuScreenClass::SaveSetup(void *)
+void MenuScreenClass::SaveSetup(void * arg)
 {
 	ui->Tabulka->Save();
+	gui_Item & it = *(gui_Item*) arg;
+
+	it.SetClicked(true);
+	it.print();
+	chThdSleepMilliseconds(400);
+	it.SetClicked(false);
+	it.print();
 }
 
 void MenuScreenClass::MakeActiveCB(void * item)

@@ -220,19 +220,22 @@ void MainScreenClass::RefreshTemp(void * data)
 	static int16_t prev = 10;
 
 	Temperature::RefreshTemperature();
-	int16_t temp = Temperature::GetTemperature();
+	volatile int16_t temp = Temperature::GetTemperature();
+
+	temp = temp / 128 * 10 / 2;
 	if (prev != temp)
 	{
-		scren->TeplotaDoma->SetValue(temp / 128 * 10 / 2);
+		scren->TeplotaDoma->SetValue(temp);
 		scren->TeplotaDoma->print();
 		prev = temp;
 	}
 
 	static int16_t DolePrev;
 	temp = Wireless::GetTemperature();
+	temp = temp / 128 * 10 / 2;
 	if (DolePrev != temp)
 	{
-		scren->TeplotaDole->SetValue(temp / 128 * 10 / 2);
+		scren->TeplotaDole->SetValue(temp);
 		scren->TeplotaDole->print();
 		DolePrev = temp;
 	}

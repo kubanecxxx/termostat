@@ -36,8 +36,14 @@ public:
 	//voda screen
 	int16_t WaterWatchEnable;
 	int16_t WaterTemperature;
-	time_t WaterStart;
-	time_t WaterStop;
+
+	typedef struct
+	{
+		time_t WaterStart;
+		time_t WaterStop;
+	} water_time_t;
+
+	water_time_t vody[2];
 
 	//topeni screen
 	//po-pa

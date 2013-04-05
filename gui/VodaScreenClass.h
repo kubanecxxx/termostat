@@ -18,19 +18,26 @@ public:
 	~VodaScreenClass();
 	static void MakeActiveCB(void * item);
 
+	typedef struct
+	{
+		GuiFramework::gui_Item * ZacitH;
+		GuiFramework::gui_Item * ZacitM;
+		GuiFramework::gui_Item * KonecH;
+		GuiFramework::gui_Item * KonecM;
+	} cas_t;
+
 	GuiFramework::gui_Item * Teplota;
-	GuiFramework::gui_Item * HodinyZacit;
-	GuiFramework::gui_Item * MinutyZacit;
-	GuiFramework::gui_Item * HodinyKonec;
-	GuiFramework::gui_Item * MinutyKonec;
 	GuiFramework::gui_Item * HlidatTeplotu;
+
+	cas_t casy[2];
 
 private:
 	static void conv_onoff(char * data, int16_t value);
 	static GuiFramework::gui_Screen * screen;
 
 	void CreateHalf();
-	void CreateRest();
+	void CreateCas(uint16_t pixels, cas_t & cas , uint8_t table);
+	void CreateBack();
 
 };
 

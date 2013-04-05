@@ -32,6 +32,8 @@
 #ifndef _CHCONF_H_
 #define _CHCONF_H_
 
+#define CORTEX_ENABLE_WFI_IDLE TRUE
+
 /*===========================================================================*/
 /**
  * @name Kernel parameters and options
@@ -499,7 +501,7 @@
 #if !defined(IDLE_LOOP_HOOK) || defined(__DOXYGEN__)
 #define IDLE_LOOP_HOOK() {                                                  \
   /* Idle loop code here.*/                                                 \
-  asm("wfi"); \
+  asm("nop"); \
 }
 #endif
 

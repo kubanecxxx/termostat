@@ -35,9 +35,6 @@ int main(void)
 	ui = new GUI::Gui;
 	new Wireless;
 
-	rf_init();
-	rf_sleep();
-
 	chThdSetPriority(NORMALPRIO - 1);
 	refresh_logic = new delay_class(Logic::logika_refresh, ui, 3000);
 

@@ -26,12 +26,28 @@ VodaScreenClass::VodaScreenClass()
 	screen = new gui_Screen;
 
 	CreateHalf();
-	CreateRest();
+	CreateCas(0, casy[0], 0);
+	CreateCas(30, casy[1], 1);
+	CreateBack();
+
+}
+
+void VodaScreenClass::CreateBack()
+{
+	gui_Item pole;
+	pole.SetText("Zpet");
+	pole.SetPrimaryX(50);
+	pole.SetPrimaryY(140);
+	pole.SetShownValue(false);
+	pole.SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
+			MenuScreenClass::MakeActiveCB);
+	pole.SetConvFunction(conv_dummy);
+	screen->Register(&pole, true);
 }
 
 void VodaScreenClass::CreateHalf()
 {
-	gui_Item pole[3];
+	gui_Item pole[2];
 
 	pole[0].SetText("Hlidat t. ");
 	pole[0].SetValue(ui->Tabulka->WaterWatchEnable);
@@ -50,59 +66,58 @@ void VodaScreenClass::CreateHalf()
 	pole[1].SetStep(5);
 	pole[1].SetConvFunction(MainScreenClass::conv_teplota);
 
-	pole[2].SetText("Zacit   ");
-	pole[2].SetLowLimit(0);
-	pole[2].SetHighLimit(23);
-	pole[2].SetValue(ui->Tabulka->WaterStart.hour);
-	pole[2].SetConvFunction(conv_hours_minutes);
-	pole[2].SetPrimaryX(X1);
-	pole[2].SetPrimaryY(Y1);
+	HlidatTeplotu = screen->Register(&pole[0], true);
+	Teplota = screen->Register(&pole[1], true);
 
-	HlidatTeplotu = screen->Register(&pole[0],true);
-	Teplota = screen->Register(&pole[1],true);
-	HodinyZacit = screen->Register(&pole[2],true);
 }
 
-void VodaScreenClass::CreateRest()
+void VodaScreenClass::CreateCas(uint16_t pixel, cas_t & cas, uint8_t table)
 {
 	gui_Item pole[4];
+	gui_Item * it = pole;
 
-	pole[0].SetText(":");
-	pole[0].SetValue(ui->Tabulka->WaterStart.min);
-	pole[0].SetHighLimit(59);
-	pole[0].SetLowLimit(0);
-	pole[0].SetConvFunction(conv_hours_minutes);
-	pole[0].SetPrimaryX(X2);
-	pole[0].SetPrimaryY(Y1);
+	Table::water_time_t & voda = ui->Tabulka->vody[table];
 
-	pole[1].SetText("Vypnout ");
-	pole[1].SetLowLimit(0);
-	pole[1].SetHighLimit(23);
-	pole[1].SetValue(ui->Tabulka->WaterStop.hour);
-	pole[1].SetConvFunction(conv_hours_minutes);
-	pole[1].SetPrimaryX(X1);
-	pole[1].SetPrimaryY(Y2);
+	it->SetText("Zacit   ");
+	it->SetLowLimit(0);
+	it->SetHighLimit(23);
+	it->SetValue(voda.WaterStart.hour);
+	it->SetConvFunction(conv_hours_minutes);
+	it->SetPrimaryX(X1);
+	it->SetPrimaryY(Y1 + pixel);
+	it++;
 
-	pole[2].SetText(":");
-	pole[2].SetValue(ui->Tabulka->WaterStop.min);
-	pole[2].SetHighLimit(59);
-	pole[2].SetLowLimit(0);
-	pole[2].SetConvFunction(conv_hours_minutes);
-	pole[2].SetPrimaryX(X2);
-	pole[2].SetPrimaryY(Y2);
+	it->SetText(":");
+	it->SetValue(voda.WaterStart.min);
+	it->SetHighLimit(59);
+	it->SetLowLimit(0);
+	it->SetConvFunction(conv_hours_minutes);
+	it->SetPrimaryX(X2);
+	it->SetPrimaryY(Y1 + pixel);
+	it++;
 
-	pole[3].SetText("Zpet");
-	pole[3].SetPrimaryX(50);
-	pole[3].SetPrimaryY(140);
-	pole[3].SetShownValue(false);
-	pole[3].SetCallback(gui_Item::BUTTON_ENTER, gui_Item::NOTCLICKED,
-			MenuScreenClass::MakeActiveCB);
-	pole[3].SetConvFunction(conv_dummy);
+	it->SetText("Vypnout ");
+	it->SetLowLimit(0);
+	it->SetHighLimit(23);
+	it->SetValue(voda.WaterStop.hour);
+	it->SetConvFunction(conv_hours_minutes);
+	it->SetPrimaryX(X1);
+	it->SetPrimaryY(Y2 + pixel);
+	it++;
 
-	MinutyZacit = screen->Register(&pole[0],true);
-	HodinyKonec = screen->Register(&pole[1],true);
-	MinutyKonec = screen->Register(&pole[2],true);
-	screen->Register(&pole[3],true);
+	it->SetText(":");
+	it->SetValue(voda.WaterStop.min);
+	it->SetHighLimit(59);
+	it->SetLowLimit(0);
+	it->SetConvFunction(conv_hours_minutes);
+	it->SetPrimaryX(X2);
+	it->SetPrimaryY(Y2 + pixel);
+	it++;
+
+	cas.ZacitH = screen->Register(&pole[0], true);
+	cas.ZacitM = screen->Register(&pole[1], true);
+	cas.KonecH = screen->Register(&pole[2], true);
+	cas.KonecM = screen->Register(&pole[3], true);
 }
 
 void VodaScreenClass::MakeActiveCB(void * item)

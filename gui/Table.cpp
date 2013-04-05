@@ -12,7 +12,7 @@ namespace GUI
 {
 
 #define BASE (0x08000000 + 98 * 1024)
-const Table * Table::FlashBase = (Table *) ( BASE);
+const Table * Table::FlashBase = (Table *) (BASE);
 
 void Table::Save()
 {
@@ -27,10 +27,14 @@ void Table::Save()
 	//voda screen
 	WaterWatchEnable = ui->ScreenVoda->HlidatTeplotu->GetValue();
 	WaterTemperature = ui->ScreenVoda->Teplota->GetValue();
-	WaterStart.hour = ui->ScreenVoda->HodinyZacit->GetValue();
-	WaterStart.min = ui->ScreenVoda->MinutyZacit->GetValue();
-	WaterStop.hour = ui->ScreenVoda->HodinyKonec->GetValue();
-	WaterStop.min = ui->ScreenVoda->MinutyKonec->GetValue();
+
+	for (int i = 0; i < 2; i++)
+	{
+		vody[i].WaterStart.hour = ui->ScreenVoda->casy[i].ZacitH->GetValue();
+		vody[i].WaterStart.min = ui->ScreenVoda->casy[i].ZacitM->GetValue();
+		vody[i].WaterStop.hour = ui->ScreenVoda->casy[i].KonecH->GetValue();
+		vody[i].WaterStop.min = ui->ScreenVoda->casy[i].KonecM->GetValue();
+	}
 
 	//topeni screen
 	for (int i = 0; i < 4; i++)

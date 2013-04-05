@@ -12,7 +12,6 @@
 GUI::Gui * Logic::ui;
 Logic::logika_KotelStateTypedef Logic::Kotel;
 
-
 void Logic::logika_refresh(void * data)
 {
 	ui = (GUI::Gui *) data;
@@ -67,8 +66,8 @@ void Logic::logika_refresh(void * data)
 		ui->ScreenMain->TeplotaManual->print();
 	}
 
-	if (prev_teplota != ui->ScreenMain->TeplotaChtena->GetValue()
-			|| prev_show2 != ui->ScreenMain->TeplotaChtena->IsShownGlobal())
+	if (prev_teplota != ui->ScreenMain->TeplotaChtena->GetValue() || prev_show2
+			!= ui->ScreenMain->TeplotaChtena->IsShownGlobal())
 	{
 		prev_teplota = ui->ScreenMain->TeplotaChtena->GetValue();
 		prev_show2 = ui->ScreenMain->TeplotaChtena->IsShownGlobal();
@@ -90,14 +89,22 @@ Logic::logika_KotelStateTypedef Logic::logika_GetKotelVodaState(void)
 			+ ui->ScreenMain->Minuty->GetValue();
 	int16_t teplotaChtena = ui->ScreenVoda->Teplota->GetValue();
 	int16_t HlidatTeplotu = ui->ScreenVoda->HlidatTeplotu->GetValue();
-	int16_t casZapnout = (ui->ScreenVoda->HodinyZacit->GetValue() * 60)
-			+ ui->ScreenVoda->MinutyZacit->GetValue();
-	int16_t casVypnout = (ui->ScreenVoda->HodinyKonec->GetValue() * 60)
-			+ ui->ScreenVoda->MinutyKonec->GetValue();
 
 	logika_KotelStateTypedef kotel = NETOPIT;
 
-	if (logika_KrucialniPodminka(Cas, casZapnout, casVypnout) == TOPIT)
+	for (int i = 0; i < 2; i++)
+	{
+		int16_t casZapnout = (ui->ScreenVoda->casy[i].ZacitH->GetValue() * 60)
+				+ ui->ScreenVoda->casy[i].ZacitM->GetValue();
+		int16_t casVypnout = (ui->ScreenVoda->casy[i].KonecH->GetValue() * 60)
+				+ ui->ScreenVoda->casy[i].KonecM->GetValue();
+
+		kotel = logika_KrucialniPodminka(Cas, casZapnout, casVypnout);
+		if (kotel == TOPIT)
+			break;
+	}
+
+	if (kotel == TOPIT)
 	{
 		if (HlidatTeplotu == 0)
 			kotel = TOPIT;
@@ -107,10 +114,6 @@ Logic::logika_KotelStateTypedef Logic::logika_GetKotelVodaState(void)
 				kotel = TOPIT;
 		}
 	}
-	else
-	{
-		kotel = NETOPIT;
-	}
 
 	return kotel;
 }
@@ -118,7 +121,7 @@ Logic::logika_KotelStateTypedef Logic::logika_GetKotelVodaState(void)
 Logic::logika_KotelStateTypedef Logic::logika_GetKotelTopeniState(
 		int16_t & teplota)
 {
-	int16_t Teplota = ui->ScreenMain->TeplotaDole->GetValue();
+	int16_t Teplota = ui->ScreenMain->TeplotaDoma->GetValue();
 	int16_t Den = ui->ScreenMain->Den->GetValue();
 	int16_t Cas = ui->ScreenMain->Hodiny->GetValue() * 60
 			+ ui->ScreenMain->Minuty->GetValue();
